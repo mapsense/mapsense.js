@@ -219,9 +219,12 @@ po.layer = function(load, unload) {
     for (var key in newLocks) {
       var t = newLocks[key],
           k = roundZoom(Math.pow(2, t.level = t.zoom - tileCenter.zoom));
-      t.element.setAttribute("transform", "translate("
-        + Math.round(t.x = tileSize.x * (t.column - tileCenter.column * k)) + ","
-        + Math.round(t.y = tileSize.y * (t.row - tileCenter.row * k)) + ")");
+      var transform = "translate("
+        + Math.round(t.x = tileSize.x * (t.column - tileCenter.column * k)) + "px" + ","
+        + Math.round(t.y = tileSize.y * (t.row - tileCenter.row * k)) + "px" + ")";
+      d3.select(t.element).style("transform", transform);
+      d3.select(t.element).style("-webkit-transform", transform);
+      d3.select(t.element).style("-ms-transform", transform);
     }
 
     // remove tiles that are no longer visible
