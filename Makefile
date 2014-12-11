@@ -12,6 +12,7 @@ JS_FILES = \
 	src/Layer.js \
 	src/Image.js \
 	src/GeoJson.js \
+	src/D3GeoJson.js \
 	src/Dblclick.js \
 	src/Drag.js \
 	src/Wheel.js \
