@@ -9,7 +9,8 @@ po.d3GeoJson = function(fetch) {
       clipRect = clipPath.appendChild(po.svg("rect")),
       scale = "auto",
       zoom = null,
-      features;
+      features,
+      rectile = true;
 
   container.setAttribute("fill-rule", "evenodd");
   clipPath.setAttribute("id", clipId);
@@ -82,6 +83,14 @@ po.d3GeoJson = function(fetch) {
       /* Fetch the next batch of features, if so directed. */
       if (data.next) tile.request = fetch(data.next.href, update);
 
+      if (d3GeoJson.tile() && rectile) {
+        var tileSize = d3GeoJson.map().tileSize();
+        d3.select(g.insertBefore(po.svg("rect"), g.firstChild))
+          .attr("width", tileSize.x)
+          .attr("height", tileSize.x)
+          .attr("class", "rectile");
+      }
+
       draw(g, data, path, updated, tile);
 
       tile.ready = true;
@@ -151,6 +160,12 @@ po.d3GeoJson = function(fetch) {
       }
     }
   }
+
+  d3GeoJson.rectile = function(x) {
+    if (!arguments.length) return rectile;
+    rectile = x;
+    return d3GeoJson;
+  };
 
   d3GeoJson.url = function(x) {
     if (!arguments.length) return url;
