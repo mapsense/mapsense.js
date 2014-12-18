@@ -17,15 +17,18 @@ po.queue = (function() {
     return false;
   }
 
-  function request(url, callback, mimeType) {
+  function request(url, callback, mimeType, responseType) {
     var req;
 
     function send() {
       req = new XMLHttpRequest();
+      req.open("GET", url, true);
       if (mimeType && req.overrideMimeType) {
         req.overrideMimeType(mimeType);
       }
-      req.open("GET", url, true);
+      if (responseType) {
+        req.responseType = responseType;
+      }
       req.onreadystatechange = function(e) {
         if (req.readyState == 4) {
           active--;
@@ -70,6 +73,12 @@ po.queue = (function() {
     }, "application/xml");
   }
 
+  function octetStream(url, callback) {
+    return request(url, function(req) {
+      if (req.response) callback(req.response);
+    }, "application/octet-stream", "arraybuffer");
+  }
+
   function image(image, src, callback) {
     var img;
 
@@ -99,5 +108,11 @@ po.queue = (function() {
     return {abort: abort};
   }
 
-  return {text: text, xml: xml, json: json, image: image};
+  return {
+    text: text,
+    xml: xml,
+    json: json,
+    octetStream: octetStream,
+    image: image
+  };
 })();
