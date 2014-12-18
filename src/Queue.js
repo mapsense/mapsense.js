@@ -17,13 +17,16 @@ po.queue = (function() {
     return false;
   }
 
-  function request(url, callback, mimeType) {
+  function request(url, callback, mimeType, responseType) {
     var req;
 
     function send() {
       req = new XMLHttpRequest();
       if (mimeType && req.overrideMimeType) {
         req.overrideMimeType(mimeType);
+      }
+      if (responseType) {
+        req.responseType = responseType;
       }
       req.open("GET", url, true);
       req.onreadystatechange = function(e) {
@@ -70,6 +73,12 @@ po.queue = (function() {
     }, "application/xml");
   }
 
+  function octetStream(url, callback) {
+    return request(url, function(req) {
+      if (req.response) callback(req.response);
+    }, "application/octet-stream", "arraybuffer");
+  }
+
   function image(image, src, callback) {
     var img;
 
@@ -99,5 +108,11 @@ po.queue = (function() {
     return {abort: abort};
   }
 
-  return {text: text, xml: xml, json: json, image: image};
+  return {
+    text: text,
+    xml: xml,
+    json: json,
+    octetStream: octetStream,
+    image: image
+  };
 })();
