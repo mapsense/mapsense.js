@@ -3,7 +3,7 @@ po.d3TopoJson = function(fetch) {
 
   var topoToGeo = function(url, callback) {
     function convert(topology, object, layer, features) {
-      if (object.type == "GeometryCollection") {
+      if (object.type == "GeometryCollection" && !object.properties) {
         object.geometries.forEach(function(g) {
           convert(topology, g, layer, features);
         });
