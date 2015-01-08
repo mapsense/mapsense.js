@@ -1,6 +1,32 @@
 po.d3TopoJson = function(fetch) {
   if (!arguments.length) fetch = po.queue.json;
 
+  var classify;
+
+  function groupFeatures(features) {
+    if (!classify)
+      return features;
+
+    var classIndices = {};
+    var groupedFeatures = [];
+    features.forEach(function(f) {
+      var c = classify(f);
+      var index = classIndices[c];
+      if (index === undefined) {
+        index = groupedFeatures.push([]) - 1;
+        classIndices[c] = index;
+      }
+      groupedFeatures[index].push(f);
+    });
+
+    return groupedFeatures.map(function(g) {
+      return {
+        type: 'GeometryCollection',
+        geometries: g
+      };
+    });
+  }
+
   var topologyFeatures = function(topology) {
     function convert(topology, object, layer, features) {
       if (object.type == "GeometryCollection" && !object.properties) {
@@ -24,6 +50,7 @@ po.d3TopoJson = function(fetch) {
     for (var o in topology.objects) {
       convert(topology, topology.objects[o], o, features);
     }
+    features = groupFeatures(features);
     return features;
   };
 
@@ -41,6 +68,12 @@ po.d3TopoJson = function(fetch) {
   d3TopoJson.topologyFeatures = function(x) {
     if (!arguments.length) return topologyFeatures;
     topologyFeatures = x;
+    return d3TopoJson;
+  };
+
+  d3TopoJson.classify = function(x) {
+    if (!arguments.length) return classify;
+    classify = x;
     return d3TopoJson;
   };
 
