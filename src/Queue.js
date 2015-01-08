@@ -22,13 +22,13 @@ po.queue = (function() {
 
     function send() {
       req = new XMLHttpRequest();
+      req.open("GET", url, true);
       if (mimeType && req.overrideMimeType) {
         req.overrideMimeType(mimeType);
       }
       if (responseType) {
         req.responseType = responseType;
       }
-      req.open("GET", url, true);
       req.onreadystatechange = function(e) {
         if (req.readyState == 4) {
           active--;
