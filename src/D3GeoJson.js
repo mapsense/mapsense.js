@@ -179,12 +179,12 @@ po.d3GeoJson = function(fetch) {
 
   d3GeoJson.attr = function(name, value) {
     attributes[name] = value;
-    return d3GeoJson;
+    return d3GeoJson.reshow();
   };
 
   d3GeoJson.style = function(name, value) {
     styles[name] = value;
-    return d3GeoJson;
+    return d3GeoJson.reshow();
   };
 
   d3GeoJson.url = function(x) {
