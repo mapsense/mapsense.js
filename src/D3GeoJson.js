@@ -85,7 +85,7 @@ po.d3GeoJson = function(fetch) {
       /* Fetch the next batch of features, if so directed. */
       if (data.next) tile.request = fetch(data.next.href, update);
 
-      if (rectile) {
+      if (d3GeoJson.tile() && rectile) {
         var tileSize = d3GeoJson.map().tileSize();
         d3.select(g.insertBefore(po.svg("rect"), g.firstChild))
           .attr("width", tileSize.x)
