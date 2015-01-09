@@ -10,7 +10,7 @@ po.d3GeoJson = function(fetch) {
       scale = "auto",
       zoom = null,
       features,
-      rectile = true,
+      tileBackground = true,
       attributes = {},
       styles = {};
 
@@ -85,12 +85,12 @@ po.d3GeoJson = function(fetch) {
       /* Fetch the next batch of features, if so directed. */
       if (data.next) tile.request = fetch(data.next.href, update);
 
-      if (d3GeoJson.tile() && rectile) {
+      if (d3GeoJson.tile() && tileBackground) {
         var tileSize = d3GeoJson.map().tileSize();
         d3.select(g.insertBefore(po.svg("rect"), g.firstChild))
           .attr("width", tileSize.x)
           .attr("height", tileSize.x)
-          .attr("class", "rectile");
+          .attr("class", "tile-background");
       }
 
       draw(g, data, path, updated, tile);
@@ -171,9 +171,9 @@ po.d3GeoJson = function(fetch) {
     }
   }
 
-  d3GeoJson.rectile = function(x) {
-    if (!arguments.length) return rectile;
-    rectile = x;
+  d3GeoJson.tileBackground = function(x) {
+    if (!arguments.length) return tileBackground;
+    tileBackground = x;
     return d3GeoJson;
   };
 
