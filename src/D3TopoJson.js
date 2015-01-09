@@ -1,7 +1,8 @@
 po.d3TopoJson = function(fetch) {
   if (!arguments.length) fetch = po.queue.json;
 
-  var classify;
+  var classify,
+      staticTopology;
 
   function groupFeatures(features) {
     if (!classify)
@@ -75,6 +76,12 @@ po.d3TopoJson = function(fetch) {
     if (!arguments.length) return classify;
     classify = x;
     return d3TopoJson;
+  };
+
+  d3TopoJson.staticTopology = function(x) {
+    if (!arguments.length) return staticTopology;
+    staticTopology = x;
+    return d3TopoJson.features(staticTopology ? topologyFeatures(staticTopology) : null);
   };
 
   return d3TopoJson;
