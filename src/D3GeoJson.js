@@ -11,8 +11,7 @@ po.d3GeoJson = function(fetch) {
       zoom = null,
       features,
       tileBackground = true,
-      attributes = {},
-      styles = {};
+      selection;
 
   container.setAttribute("fill-rule", "evenodd");
   clipPath.setAttribute("id", clipId);
@@ -122,13 +121,8 @@ po.d3GeoJson = function(fetch) {
     if (updated)
       enter.each(function(f) { updated.push({ element: this, data: f }); });
 
-    Object.keys(attributes).forEach(function(name) {
-      update.attr(name, attributes[name]);
-    });
-
-    Object.keys(styles).forEach(function(name) {
-      update.style(name, styles[name]);
-    });
+    if (selection)
+      selection(update);
 
     var paths = [];
     update.each(function(f, i) {
@@ -177,13 +171,9 @@ po.d3GeoJson = function(fetch) {
     return d3GeoJson;
   };
 
-  d3GeoJson.attr = function(name, value) {
-    attributes[name] = value;
-    return d3GeoJson.reshow();
-  };
-
-  d3GeoJson.style = function(name, value) {
-    styles[name] = value;
+  d3GeoJson.selection = function(x) {
+    if (!arguments.length) return selection;
+    selection = x;
     return d3GeoJson.reshow();
   };
 
