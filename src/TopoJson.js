@@ -1,4 +1,4 @@
-po.d3TopoJson = function(fetch) {
+po.topoJson = function(fetch) {
   if (!arguments.length) fetch = po.queue.json;
 
   var classify,
@@ -64,25 +64,25 @@ po.d3TopoJson = function(fetch) {
     });
   };
 
-  var d3TopoJson = po.d3GeoJson(topoToGeo);
+  var topoJson = po.geoJson(topoToGeo);
 
-  d3TopoJson.topologyFeatures = function(x) {
+  topoJson.topologyFeatures = function(x) {
     if (!arguments.length) return topologyFeatures;
     topologyFeatures = x;
-    return d3TopoJson;
+    return topoJson;
   };
 
-  d3TopoJson.classify = function(x) {
+  topoJson.classify = function(x) {
     if (!arguments.length) return classify;
     classify = x;
-    return d3TopoJson;
+    return topoJson;
   }
 
-  d3TopoJson.staticTopology = function(x) {
+  topoJson.staticTopology = function(x) {
     if (!arguments.length) return staticTopology;
     staticTopology = x;
-    return d3TopoJson.features(staticTopology ? topologyFeatures(staticTopology) : null);
+    return topoJson.features(staticTopology ? topologyFeatures(staticTopology) : null);
   };
 
-  return d3TopoJson;
+  return topoJson;
 };

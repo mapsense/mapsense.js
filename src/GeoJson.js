@@ -9,7 +9,10 @@ po.geoJson = function(fetch) {
       clipRect = clipPath.appendChild(po.svg("rect")),
       scale = "auto",
       zoom = null,
-      features;
+      features,
+      tileBackground = true,
+      mercatorSource = false,
+      selection;
 
   container.setAttribute("fill-rule", "evenodd");
   clipPath.setAttribute("id", clipId);
@@ -27,138 +30,6 @@ po.geoJson = function(fetch) {
       return p;
     };
   }
-
-  function geometry(o, proj) {
-    return o && o.type in types && types[o.type](o, proj);
-  }
-
-  var types = {
-
-    Point: function(o, proj) {
-      var p = proj(o.coordinates),
-          c = po.svg("circle");
-      c.setAttribute("r", 4.5);
-      c.setAttribute("transform", "translate(" + p.x + "," + p.y + ")");
-      return c;
-    },
-
-    MultiPoint: function(o, proj) {
-      var g = po.svg("g"),
-          c = o.coordinates,
-          p, // proj(c[i])
-          x, // svg:circle
-          i = -1,
-          n = c.length;
-      while (++i < n) {
-        x = g.appendChild(po.svg("circle"));
-        x.setAttribute("r", 4.5);
-        x.setAttribute("transform", "translate(" + (p = proj(c[i])).x + "," + p.y + ")");
-      }
-      return g;
-    },
-
-    LineString: function(o, proj) {
-      var x = po.svg("path"),
-          d = ["M"],
-          c = o.coordinates,
-          p, // proj(c[i])
-          i = -1,
-          n = c.length;
-      while (++i < n) d.push((p = proj(c[i])).x, ",", p.y, "L");
-      d.pop();
-      if (!d.length) return;
-      x.setAttribute("d", d.join(""));
-      return x;
-    },
-
-    MultiLineString: function(o, proj) {
-      var x = po.svg("path"),
-          d = [],
-          ci = o.coordinates,
-          cj, // ci[i]
-          i = -1,
-          j,
-          n = ci.length,
-          m;
-      while (++i < n) {
-        cj = ci[i];
-        j = -1;
-        m = cj.length;
-        d.push("M");
-        while (++j < m) d.push((p = proj(cj[j])).x, ",", p.y, "L");
-        d.pop();
-      }
-      if (!d.length) return;
-      x.setAttribute("d", d.join(""));
-      return x;
-    },
-
-    Polygon: function(o, proj) {
-      var x = po.svg("path"),
-          d = [],
-          ci = o.coordinates,
-          cj, // ci[i]
-          i = -1,
-          j,
-          n = ci.length,
-          m;
-      while (++i < n) {
-        cj = ci[i];
-        j = -1;
-        m = cj.length - 1;
-        d.push("M");
-        while (++j < m) d.push((p = proj(cj[j])).x, ",", p.y, "L");
-        d[d.length - 1] = "Z";
-      }
-      if (!d.length) return;
-      x.setAttribute("d", d.join(""));
-      return x;
-    },
-
-    MultiPolygon: function(o, proj) {
-      var x = po.svg("path"),
-          d = [],
-          ci = o.coordinates,
-          cj, // ci[i]
-          ck, // cj[j]
-          i = -1,
-          j,
-          k,
-          n = ci.length,
-          m,
-          l;
-      while (++i < n) {
-        cj = ci[i];
-        j = -1;
-        m = cj.length;
-        while (++j < m) {
-          ck = cj[j];
-          k = -1;
-          l = ck.length - 1;
-          d.push("M");
-          while (++k < l) d.push((p = proj(ck[k])).x, ",", p.y, "L");
-          d[d.length - 1] = "Z";
-        }
-      }
-      if (!d.length) return;
-      x.setAttribute("d", d.join(""));
-      return x;
-    },
-
-    GeometryCollection: function(o, proj) {
-      var g = po.svg("g"),
-          i = -1,
-          c = o.geometries,
-          n = c.length,
-          x;
-      while (++i < n) {
-        x = geometry(c[i], proj);
-        if (x) g.appendChild(x);
-      }
-      return g;
-    }
-
-  };
 
   function rescale(o, e, k) {
     return o.type in rescales && rescales[o.type](o, e, k);
@@ -186,11 +57,54 @@ po.geoJson = function(fetch) {
 
   };
 
+  // Create path projecting WGS84 (4326) to spherical coordinates (900913).
+  function projectSpherical(tileProj) {
+    return d3.geo.path().projection({
+      stream: function(stream) {
+        return {
+          point: function(x, y) {
+            var p = tileProj.locationPoint({ lon: x, lat: y});
+            stream.point(Math.round(2 * p.x) / 2, Math.round(2 * p.y) / 2);
+          },
+          sphere: function() { stream.sphere(); },
+          lineStart: function() { stream.lineStart(); },
+          lineEnd: function() { stream.lineEnd(); },
+          polygonStart: function() { stream.polygonStart(); },
+          polygonEnd: function() { stream.polygonEnd(); }
+        };
+      }
+    });
+  }
+
+  // Create path for already projected spherical Mercator coordinates (900913).
+  function projectMercator(tile) {
+    function invert(sx, sy, tx, ty) {
+      return d3.geo.transform({
+        point: function(x, y) {
+          this.stream.point(sx * (x - tx), sy * (y - ty));
+        }
+      });
+    }
+
+    var K = 40075016.6856;
+    var m = Math.pow(2, tile.zoom);
+    var tileSize = geoJson.map().tileSize();
+    var sx = m * tileSize.x / K;
+    var sy = m * tileSize.y / K;
+    var tx = (m / 2 - tile.column) * K / m;
+    var ty = (m / 2 - tile.row) * K / m;
+
+    return d3.geo.path().projection(invert(sx, sy, -tx, -ty));
+  }
+
   function load(tile, proj) {
     var g = tile.element = po.svg("g");
-    tile.features = [];
 
-    proj = projection(proj(tile).locationPoint);
+    var tileProj = proj(tile),
+        path = mercatorSource ? projectMercator(tile) :
+          projectSpherical(tileProj);
+
+    tile.features = [];
 
     function update(data) {
       var updated = [];
@@ -198,27 +112,15 @@ po.geoJson = function(fetch) {
       /* Fetch the next batch of features, if so directed. */
       if (data.next) tile.request = fetch(data.next.href, update);
 
-      /* Convert the GeoJSON to SVG. */
-      switch (data.type) {
-        case "FeatureCollection": {
-          for (var i = 0; i < data.features.length; i++) {
-            var feature = data.features[i],
-                element = geometry(feature.geometry, proj);
-            if (element) updated.push({element: g.appendChild(element), data: feature});
-          }
-          break;
-        }
-        case "Feature": {
-          var element = geometry(data.geometry, proj);
-          if (element) updated.push({element: g.appendChild(element), data: data});
-          break;
-        }
-        default: {
-          var element = geometry(data, proj);
-          if (element) updated.push({element: g.appendChild(element), data: {type: "Feature", geometry: data}});
-          break;
-        }
+      if (geoJson.tile() && tileBackground) {
+        var tileSize = geoJson.map().tileSize();
+        d3.select(g.insertBefore(po.svg("rect"), g.firstChild))
+          .attr("width", tileSize.x)
+          .attr("height", tileSize.x)
+          .attr("class", "tile-background");
       }
+
+      draw(g, data, path, updated, tile);
 
       tile.ready = true;
       updated.push.apply(tile.features, updated);
@@ -230,6 +132,31 @@ po.geoJson = function(fetch) {
     } else {
       update({type: "FeatureCollection", features: features || []});
     }
+  }
+
+  function draw(g, data, path, updated, tile) {
+    var update = d3.select(g)
+      .selectAll('path')
+      .data(data.features);
+
+    update.exit()
+      .remove();
+
+    var enter = update
+      .enter()
+      .append('path');
+
+    if (updated)
+      enter.each(function(f) { updated.push({ element: this, data: f }); });
+
+    if (selection)
+      selection(update);
+
+    var paths = [];
+    update.each(function(f, i) {
+      paths[i] = path(f);
+    });
+    update.attr('d', function(f, i) { return paths[i]; });
   }
 
   function unload(tile) {
@@ -265,6 +192,24 @@ po.geoJson = function(fetch) {
       }
     }
   }
+
+  geoJson.tileBackground = function(x) {
+    if (!arguments.length) return tileBackground;
+    tileBackground = x;
+    return geoJson;
+  };
+
+  geoJson.mercatorSource = function(x) {
+    if (!arguments.length) return mercatorSource;
+    mercatorSource = x;
+    return geoJson;
+  };
+
+  geoJson.selection = function(x) {
+    if (!arguments.length) return selection;
+    selection = x;
+    return geoJson.reshow();
+  };
 
   geoJson.url = function(x) {
     if (!arguments.length) return url;
@@ -322,6 +267,8 @@ po.geoJson = function(fetch) {
   geoJson.show = function(tile) {
     if (clip) tile.element.setAttribute("clip-path", clipHref);
     else tile.element.removeAttribute("clip-path");
+    if (selection)
+      selection(d3.select(tile.element).selectAll('path'));
     geoJson.dispatch({type: "show", tile: tile, features: tile.features});
     return geoJson;
   };
