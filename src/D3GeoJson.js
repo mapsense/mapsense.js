@@ -56,25 +56,30 @@ po.d3GeoJson = function(fetch) {
 
   };
 
+  // Create path projecting WGS84 spherical Mercator coordinates.
+  function projectSpherical(tileProj) {
+    return d3.geo.path().projection({
+      stream: function(stream) {
+        return {
+          point: function(x, y) {
+            var p = tileProj.locationPoint({ lon: x, lat: y});
+            stream.point(Math.round(2 * p.x) / 2, Math.round(2 * p.y) / 2);
+          },
+          sphere: function() { stream.sphere(); },
+          lineStart: function() { stream.lineStart(); },
+          lineEnd: function() { stream.lineEnd(); },
+          polygonStart: function() { stream.polygonStart(); },
+          polygonEnd: function() { stream.polygonEnd(); }
+        };
+      }
+    });
+  }
+
   function load(tile, proj) {
     var g = tile.element = po.svg("g");
 
     var tileProj = proj(tile),
-        path = d3.geo.path().projection({
-          stream: function(stream) {
-            return {
-              point: function(x, y) {
-                var p = tileProj.locationPoint({ lon: x, lat: y});
-                stream.point(Math.round(2 * p.x) / 2, Math.round(2 * p.y) / 2);
-              },
-              sphere: function() { stream.sphere(); },
-              lineStart: function() { stream.lineStart(); },
-              lineEnd: function() { stream.lineEnd(); },
-              polygonStart: function() { stream.polygonStart(); },
-              polygonEnd: function() { stream.polygonEnd(); }
-            };
-          }
-        });
+        path = projectSpherical(tileProj);
 
     tile.features = [];
 
