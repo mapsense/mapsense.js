@@ -11,6 +11,7 @@ po.d3GeoJson = function(fetch) {
       zoom = null,
       features,
       tileBackground = true,
+      mercatorSource = false,
       selection;
 
   container.setAttribute("fill-rule", "evenodd");
@@ -56,25 +57,52 @@ po.d3GeoJson = function(fetch) {
 
   };
 
+  // Create path projecting WGS84 (4326) to spherical coordinates (900913).
+  function projectSpherical(tileProj) {
+    return d3.geo.path().projection({
+      stream: function(stream) {
+        return {
+          point: function(x, y) {
+            var p = tileProj.locationPoint({ lon: x, lat: y});
+            stream.point(Math.round(2 * p.x) / 2, Math.round(2 * p.y) / 2);
+          },
+          sphere: function() { stream.sphere(); },
+          lineStart: function() { stream.lineStart(); },
+          lineEnd: function() { stream.lineEnd(); },
+          polygonStart: function() { stream.polygonStart(); },
+          polygonEnd: function() { stream.polygonEnd(); }
+        };
+      }
+    });
+  }
+
+  // Create path for already projected spherical Mercator coordinates (900913).
+  function projectMercator(tile) {
+    function invert(sx, sy, tx, ty) {
+      return d3.geo.transform({
+        point: function(x, y) {
+          this.stream.point(sx * (x - tx), sy * (y - ty));
+        }
+      });
+    }
+
+    var K = 40075016.6856;
+    var m = Math.pow(2, tile.zoom);
+    var tileSize = d3GeoJson.map().tileSize();
+    var sx = m * tileSize.x / K;
+    var sy = m * tileSize.y / K;
+    var tx = (m / 2 - tile.column) * K / m;
+    var ty = (m / 2 - tile.row) * K / m;
+
+    return d3.geo.path().projection(invert(sx, sy, -tx, -ty));
+  }
+
   function load(tile, proj) {
     var g = tile.element = po.svg("g");
 
     var tileProj = proj(tile),
-        path = d3.geo.path().projection({
-          stream: function(stream) {
-            return {
-              point: function(x, y) {
-                var p = tileProj.locationPoint({ lon: x, lat: y});
-                stream.point(Math.round(2 * p.x) / 2, Math.round(2 * p.y) / 2);
-              },
-              sphere: function() { stream.sphere(); },
-              lineStart: function() { stream.lineStart(); },
-              lineEnd: function() { stream.lineEnd(); },
-              polygonStart: function() { stream.polygonStart(); },
-              polygonEnd: function() { stream.polygonEnd(); }
-            };
-          }
-        });
+        path = mercatorSource ? projectMercator(tile) :
+          projectSpherical(tileProj);
 
     tile.features = [];
 
@@ -168,6 +196,12 @@ po.d3GeoJson = function(fetch) {
   d3GeoJson.tileBackground = function(x) {
     if (!arguments.length) return tileBackground;
     tileBackground = x;
+    return d3GeoJson;
+  };
+
+  d3GeoJson.mercatorSource = function(x) {
+    if (!arguments.length) return mercatorSource;
+    mercatorSource = x;
     return d3GeoJson;
   };
 
