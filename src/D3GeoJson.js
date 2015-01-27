@@ -267,6 +267,8 @@ po.d3GeoJson = function(fetch) {
   d3GeoJson.show = function(tile) {
     if (clip) tile.element.setAttribute("clip-path", clipHref);
     else tile.element.removeAttribute("clip-path");
+    if (selection)
+      selection(d3.select(tile.element).selectAll('path'));
     d3GeoJson.dispatch({type: "show", tile: tile, features: tile.features});
     return d3GeoJson;
   };
