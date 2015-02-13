@@ -1,6 +1,6 @@
-po.compass = function() {
+ms.compass = function() {
   var compass = {},
-      g = po.svg("g"),
+      g = ms.svg("g"),
       ticks = {},
       r = 30,
       speed = 16,
@@ -15,7 +15,7 @@ po.compass = function() {
       panDirection,
       panContainer,
       drag,
-      dragRect = po.svg("rect"),
+      dragRect = ms.svg("rect"),
       map,
       container,
       window;
@@ -122,9 +122,9 @@ po.compass = function() {
     var x = Math.SQRT1_2 * r,
         y = r * .7,
         z = r * .2,
-        g = po.svg("g"),
-        dir = g.appendChild(po.svg("path")),
-        chv = g.appendChild(po.svg("path"));
+        g = ms.svg("g"),
+        dir = g.appendChild(ms.svg("path")),
+        chv = g.appendChild(ms.svg("path"));
     dir.setAttribute("class", "direction");
     dir.setAttribute("pointer-events", "all");
     dir.setAttribute("d", "M0,0L" + x + "," + x + "A" + r + "," + r + " 0 0,1 " + -x + "," + x + "Z");
@@ -141,11 +141,11 @@ po.compass = function() {
   function zoom(by) {
     var x = r * .4,
         y = x / 2,
-        g = po.svg("g"),
-        back = g.appendChild(po.svg("path")),
-        dire = g.appendChild(po.svg("path")),
-        chev = g.appendChild(po.svg("path")),
-        fore = g.appendChild(po.svg("path"));
+        g = ms.svg("g"),
+        back = g.appendChild(ms.svg("path")),
+        dire = g.appendChild(ms.svg("path")),
+        chev = g.appendChild(ms.svg("path")),
+        fore = g.appendChild(ms.svg("path"));
     back.setAttribute("class", "back");
     back.setAttribute("d", "M" + -x + ",0V" + -x + "A" + x + "," + x + " 0 1,1 " + x + "," + -x + "V0Z");
     dire.setAttribute("class", "direction");
@@ -165,9 +165,9 @@ po.compass = function() {
   function tick(i) {
     var x = r * .2,
         y = r * .4,
-        g = po.svg("g"),
-        back = g.appendChild(po.svg("rect")),
-        chev = g.appendChild(po.svg("path"));
+        g = ms.svg("g"),
+        back = g.appendChild(ms.svg("rect")),
+        chev = g.appendChild(ms.svg("path"));
     back.setAttribute("pointer-events", "all");
     back.setAttribute("fill", "none");
     back.setAttribute("x", -y);
@@ -204,10 +204,10 @@ po.compass = function() {
     g.appendChild(dragRect);
 
     if (panStyle != "none") {
-      panContainer = g.appendChild(po.svg("g"));
+      panContainer = g.appendChild(ms.svg("g"));
       panContainer.setAttribute("class", "pan");
 
-      var back = panContainer.appendChild(po.svg("circle"));
+      var back = panContainer.appendChild(ms.svg("circle"));
       back.setAttribute("class", "back");
       back.setAttribute("r", r);
 
@@ -223,7 +223,7 @@ po.compass = function() {
       var e = panContainer.appendChild(pan({x: -speed, y: 0}));
       e.setAttribute("transform", "rotate(270)");
 
-      var fore = panContainer.appendChild(po.svg("circle"));
+      var fore = panContainer.appendChild(ms.svg("circle"));
       fore.setAttribute("fill", "none");
       fore.setAttribute("class", "fore");
       fore.setAttribute("r", r);
@@ -232,7 +232,7 @@ po.compass = function() {
     }
 
     if (zoomStyle != "none") {
-      zoomContainer = g.appendChild(po.svg("g"));
+      zoomContainer = g.appendChild(ms.svg("g"));
       zoomContainer.setAttribute("class", "zoom");
 
       var j = -.5;

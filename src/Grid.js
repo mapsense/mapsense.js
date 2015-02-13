@@ -1,7 +1,7 @@
-po.grid = function() {
+ms.grid = function() {
   var grid = {},
       map,
-      g = po.svg("g");
+      g = ms.svg("g");
 
   g.setAttribute("class", "grid");
 
@@ -19,7 +19,7 @@ po.grid = function() {
 
     // Longitude ticks.
     for (var x; (x = map.locationPoint(nw).x) <= size.x; nw.lon += step) {
-      if (!line) line = g.appendChild(po.svg("line"));
+      if (!line) line = g.appendChild(ms.svg("line"));
       line.setAttribute("x1", x);
       line.setAttribute("x2", x);
       line.setAttribute("y1", 0);
@@ -29,7 +29,7 @@ po.grid = function() {
 
     // Latitude ticks.
     for (var y; (y = map.locationPoint(nw).y) <= size.y; nw.lat -= step) {
-      if (!line) line = g.appendChild(po.svg("line"));
+      if (!line) line = g.appendChild(ms.svg("line"));
       line.setAttribute("y1", y);
       line.setAttribute("y2", y);
       line.setAttribute("x1", 0);

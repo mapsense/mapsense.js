@@ -1,4 +1,4 @@
-po.cache = function(load, unload) {
+ms.cache = function(load, unload) {
   var cache = {},
       locks = {},
       map = {},

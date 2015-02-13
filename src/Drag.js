@@ -1,4 +1,4 @@
-po.drag = function() {
+ms.drag = function() {
   var drag = {},
       map,
       container,

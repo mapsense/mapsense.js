@@ -1,4 +1,4 @@
-po.queue = (function() {
+ms.queue = (function() {
   var queued = [], active = 0, size = 6;
 
   function process() {
@@ -94,7 +94,7 @@ po.queue = (function() {
         process();
       };
       img.src = src;
-      image.setAttributeNS(po.ns.xlink, "href", src);
+      image.setAttributeNS(ms.ns.xlink, "href", src);
     }
 
     function abort(hard) {

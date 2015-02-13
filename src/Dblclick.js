@@ -1,4 +1,4 @@
-po.dblclick = function() {
+ms.dblclick = function() {
   var dblclick = {},
       zoom = "mouse",
       map,

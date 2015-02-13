@@ -1,4 +1,4 @@
-po.hash = function() {
+ms.hash = function() {
   var hash = {},
       s0, // cached location.hash
       lat = 90 - 1e-8, // allowable latitude range

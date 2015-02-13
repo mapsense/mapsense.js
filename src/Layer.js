@@ -1,20 +1,20 @@
-po.layer = function(load, unload) {
+ms.layer = function(load, unload) {
   var layer = {},
-      cache = layer.cache = po.cache(load, unload).size(512),
+      cache = layer.cache = ms.cache(load, unload).size(512),
       tile = true,
       visible = true,
       zoom,
       id,
       map,
-      container = po.svg("g"),
+      container = ms.svg("g"),
       transform,
       levelZoom,
       levels = {};
 
   container.setAttribute("class", "layer");
-  for (var i = -4; i <= -1; i++) levels[i] = container.appendChild(po.svg("g"));
-  for (var i = 2; i >= 1; i--) levels[i] = container.appendChild(po.svg("g"));
-  levels[0] = container.appendChild(po.svg("g"));
+  for (var i = -4; i <= -1; i++) levels[i] = container.appendChild(ms.svg("g"));
+  for (var i = 2; i >= 1; i--) levels[i] = container.appendChild(ms.svg("g"));
+  levels[0] = container.appendChild(ms.svg("g"));
 
   function zoomIn(z) {
     var end = levels[0].nextSibling;
@@ -122,7 +122,7 @@ po.layer = function(load, unload) {
       if (column < 0) column += max;
       return {
         locationPoint: function(l) {
-          var c = po.map.locationCoordinate(l),
+          var c = ms.map.locationCoordinate(l),
               k = Math.pow(2, zoom - c.zoom);
           return {
             x: tileSize.x * (k * c.column - column),
@@ -335,7 +335,7 @@ po.layer = function(load, unload) {
     return layer;
   };
 
-  layer.dispatch = po.dispatch(layer);
+  layer.dispatch = ms.dispatch(layer);
   layer.on("load", cleanup);
 
   return layer;

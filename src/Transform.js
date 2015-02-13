@@ -1,4 +1,4 @@
-po.transform = function(a, b, c, d, e, f) {
+ms.transform = function(a, b, c, d, e, f) {
   var transform = {},
       zoomDelta,
       zoomFraction,

@@ -1,4 +1,4 @@
-po.touch = function() {
+ms.touch = function() {
   var touch = {},
       map,
       container,
@@ -46,10 +46,10 @@ po.touch = function() {
             p0 = map.mouse(t0),
             p1 = map.mouse(t1),
             p2 = {x: (p0.x + p1.x) / 2, y: (p0.y + p1.y) / 2}, // center point
-            c0 = po.map.locationCoordinate(locations[t0.identifier]),
-            c1 = po.map.locationCoordinate(locations[t1.identifier]),
+            c0 = ms.map.locationCoordinate(locations[t0.identifier]),
+            c1 = ms.map.locationCoordinate(locations[t1.identifier]),
             c2 = {row: (c0.row + c1.row) / 2, column: (c0.column + c1.column) / 2, zoom: 0},
-            l2 = po.map.coordinateLocation(c2); // center location
+            l2 = ms.map.coordinateLocation(c2); // center location
         map.zoomBy(Math.log(e.scale) / Math.LN2 + zoom - map.zoom(), p2, l2);
         if (rotate) map.angle(e.rotation / 180 * Math.PI + angle);
         e.preventDefault();
