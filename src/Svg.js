@@ -1,3 +1,3 @@
-po.svg = function(type) {
-  return document.createElementNS(po.ns.svg, type);
+ms.svg = function(type) {
+  return document.createElementNS(ms.ns.svg, type);
 };

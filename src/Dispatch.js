@@ -1,4 +1,4 @@
-po.dispatch = function(that) {
+ms.dispatch = function(that) {
   var types = {};
 
   that.on = function(type, handler) {

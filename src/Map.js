@@ -1,4 +1,4 @@
-po.map = function() {
+ms.map = function() {
   var map = {},
       container,
       size,
@@ -24,7 +24,7 @@ po.map = function() {
   ];
 
   map.locationCoordinate = function(l) {
-    var c = po.map.locationCoordinate(l),
+    var c = ms.map.locationCoordinate(l),
         k = Math.pow(2, zoom);
     c.column *= k;
     c.row *= k;
@@ -32,7 +32,7 @@ po.map = function() {
     return c;
   };
 
-  map.coordinateLocation = po.map.coordinateLocation;
+  map.coordinateLocation = ms.map.coordinateLocation;
 
   map.coordinatePoint = function(tileCenter, c) {
     var kc = Math.pow(2, zoom - c.zoom),
@@ -105,7 +105,7 @@ po.map = function() {
  }
 
   // a place to capture mouse events if no tiles exist
-  var rect = po.svg("rect");
+  var rect = ms.svg("rect");
   rect.setAttribute("visibility", "hidden");
   rect.setAttribute("pointer-events", "all");
 
@@ -127,7 +127,7 @@ po.map = function() {
   map.mouse = function(e) {
     var point = (container.ownerSVGElement || container).createSVGPoint();
     if ((bug44083 < 0) && (window.scrollX || window.scrollY)) {
-      var svg = document.body.appendChild(po.svg("svg"));
+      var svg = document.body.appendChild(ms.svg("svg"));
       svg.style.position = "absolute";
       svg.style.top = svg.style.left = "0px";
       var ctm = svg.getScreenCTM();
@@ -280,7 +280,7 @@ po.map = function() {
     return map;
   };
 
-  map.dispatch = po.dispatch(map);
+  map.dispatch = ms.dispatch(map);
 
   return map;
 };
@@ -325,7 +325,7 @@ function lat2y(lat) {
   return 180 / Math.PI * Math.log(Math.tan(Math.PI / 4 + lat * Math.PI / 360));
 }
 
-po.map.locationCoordinate = function(l) {
+ms.map.locationCoordinate = function(l) {
   var k = 1 / 360;
   return {
     column: (l.lon + 180) * k,
@@ -334,7 +334,7 @@ po.map.locationCoordinate = function(l) {
   };
 };
 
-po.map.coordinateLocation = function(c) {
+ms.map.coordinateLocation = function(c) {
   var k = 45 / Math.pow(2, c.zoom - 3);
   return {
     lon: k * c.column - 180,

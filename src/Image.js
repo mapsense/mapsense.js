@@ -1,9 +1,9 @@
-po.image = function() {
-  var image = po.layer(load, unload),
+ms.image = function() {
+  var image = ms.layer(load, unload),
       url;
 
   function load(tile) {
-    var element = tile.element = po.svg("image"), size = image.map().tileSize();
+    var element = tile.element = ms.svg("image"), size = image.map().tileSize();
     element.setAttribute("preserveAspectRatio", "none");
     element.setAttribute("width", size.x);
     element.setAttribute("height", size.y);
@@ -12,7 +12,7 @@ po.image = function() {
       element.setAttribute("opacity", 0);
       var tileUrl = url(tile);
       if (tileUrl != null) {
-        tile.request = po.queue.image(element, tileUrl, function(img) {
+        tile.request = ms.queue.image(element, tileUrl, function(img) {
           delete tile.request;
           tile.ready = true;
           tile.img = img;
@@ -25,7 +25,7 @@ po.image = function() {
       }
     } else {
       tile.ready = true;
-      if (url != null) element.setAttributeNS(po.ns.xlink, "href", url);
+      if (url != null) element.setAttributeNS(ms.ns.xlink, "href", url);
       image.dispatch({type: "load", tile: tile});
     }
   }
@@ -36,7 +36,7 @@ po.image = function() {
 
   image.url = function(x) {
     if (!arguments.length) return url;
-    url = typeof x == "string" && /{.}/.test(x) ? po.url(x) : x;
+    url = typeof x == "string" && /{.}/.test(x) ? ms.url(x) : x;
     return image.reload();
   };
 

@@ -1,4 +1,4 @@
-po.arrow = function() {
+ms.arrow = function() {
   var arrow = {},
       key = {left: 0, right: 0, up: 0, down: 0},
       last = 0,

@@ -1,4 +1,4 @@
-po.stylist = function() {
+ms.stylist = function() {
   var attrs = [],
       styles = [],
       title;
@@ -36,7 +36,7 @@ po.stylist = function() {
       if (v = title) {
         if (typeof v === "function") v = v.call(null, d);
         while (o.lastChild) o.removeChild(o.lastChild);
-        if (v != null) o.appendChild(po.svg("title")).appendChild(document.createTextNode(v));
+        if (v != null) o.appendChild(ms.svg("title")).appendChild(document.createTextNode(v));
       }
     }
   }

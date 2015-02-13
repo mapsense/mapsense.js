@@ -1,1 +1,1 @@
-})(org.polymaps);
+})(mapsense);

@@ -1,4 +1,4 @@
-po.url = function(template) {
+ms.url = function(template) {
   var hosts = [],
       repeat = true;
 
@@ -18,8 +18,8 @@ po.url = function(template) {
         case "X": return column;
         case "Y": return c.row;
         case "B": {
-          var nw = po.map.coordinateLocation({row: c.row, column: column, zoom: c.zoom}),
-              se = po.map.coordinateLocation({row: c.row + 1, column: column + 1, zoom: c.zoom}),
+          var nw = ms.map.coordinateLocation({row: c.row, column: column, zoom: c.zoom}),
+              se = ms.map.coordinateLocation({row: c.row + 1, column: column + 1, zoom: c.zoom}),
               pn = Math.ceil(Math.log(c.zoom) / Math.LN2);
           return se.lat.toFixed(pn)
               + "," + nw.lon.toFixed(pn)

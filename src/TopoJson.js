@@ -1,5 +1,5 @@
-po.topoJson = function(fetch) {
-  if (!arguments.length) fetch = po.queue.json;
+ms.topoJson = function(fetch) {
+  if (!arguments.length) fetch = ms.queue.json;
 
   var classify,
       staticTopology;
@@ -64,7 +64,7 @@ po.topoJson = function(fetch) {
     });
   };
 
-  var topoJson = po.geoJson(topoToGeo);
+  var topoJson = ms.geoJson(topoToGeo);
 
   topoJson.topologyFeatures = function(x) {
     if (!arguments.length) return topologyFeatures;

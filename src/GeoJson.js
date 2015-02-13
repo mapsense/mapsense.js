@@ -1,12 +1,12 @@
-po.geoJson = function(fetch) {
-  var geoJson = po.layer(load, unload),
+ms.geoJson = function(fetch) {
+  var geoJson = ms.layer(load, unload),
       container = geoJson.container(),
       url,
       clip = true,
-      clipId = "org.polymaps." + po.id(),
+      clipId = "org.polymaps." + ms.id(),
       clipHref = "url(#" + clipId + ")",
-      clipPath = container.insertBefore(po.svg("clipPath"), container.firstChild),
-      clipRect = clipPath.appendChild(po.svg("rect")),
+      clipPath = container.insertBefore(ms.svg("clipPath"), container.firstChild),
+      clipRect = clipPath.appendChild(ms.svg("rect")),
       scale = "auto",
       zoom = null,
       features,
@@ -17,7 +17,7 @@ po.geoJson = function(fetch) {
   container.setAttribute("fill-rule", "evenodd");
   clipPath.setAttribute("id", clipId);
 
-  if (!arguments.length) fetch = po.queue.json;
+  if (!arguments.length) fetch = ms.queue.json;
 
   function projection(proj) {
     var l = {lat: 0, lon: 0};
@@ -98,7 +98,7 @@ po.geoJson = function(fetch) {
   }
 
   function load(tile, proj) {
-    var g = tile.element = po.svg("g");
+    var g = tile.element = ms.svg("g");
 
     var tileProj = proj(tile),
         path = mercatorSource ? projectMercator(tile) :
@@ -114,7 +114,7 @@ po.geoJson = function(fetch) {
 
       if (geoJson.tile() && tileBackground) {
         var tileSize = geoJson.map().tileSize();
-        d3.select(g.insertBefore(po.svg("rect"), g.firstChild))
+        d3.select(g.insertBefore(ms.svg("rect"), g.firstChild))
           .attr("width", tileSize.x)
           .attr("height", tileSize.x)
           .attr("class", "tile-background");
@@ -213,7 +213,7 @@ po.geoJson = function(fetch) {
 
   geoJson.url = function(x) {
     if (!arguments.length) return url;
-    url = typeof x == "string" && /{.}/.test(x) ? po.url(x) : x;
+    url = typeof x == "string" && /{.}/.test(x) ? ms.url(x) : x;
     if (url != null) features = null;
     if (typeof url == "string") geoJson.tile(false);
     return geoJson.reload();

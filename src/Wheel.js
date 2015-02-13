@@ -1,4 +1,4 @@
-po.wheel = function() {
+ms.wheel = function() {
   var wheel = {},
       timePrev = 0,
       last = 0,
