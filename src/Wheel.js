@@ -40,7 +40,7 @@ po.wheel = function() {
         } catch (error) {
           // Derp! Hope for the best?
         }
-        delta *= .005;
+        delta *= .001;
       }
 
       /* If smooth zooming is disabled, batch events into unit steps. */
