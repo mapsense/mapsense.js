@@ -4,10 +4,6 @@ Mapsense.js is a JavaScript library for vector maps in the browser. It brings th
 
 See <http://developer.mapsense.co/documentation> for more details.
 
-This is the `master` branch, which contains the Polymaps source code. If
-you're looking for the Polymaps website, you should checkout the `gh-pages`
-branch instead.
-
 ## Filing Bugs
 
 We use GitHub to track issues. You can search for existing
@@ -19,9 +15,7 @@ We will occassionally address issues filed under <http://github.com/simplegeo/po
 
 ## Build Instructions
 
-You do not need to build Mapsense.js in order to view the examples; a compiled
-copy of Polymaps (`mapsense.js` and `mapsense.min.js`) is included in the
-repository.
+There is no need to build in order to start using the library; compiled copies (`mapsense.js` and `mapsense.min.js`) are included in the repository.
 
 To edit and build a new version of Mapsense.js, you must first install Java and
 GNU Make. If you are on Mac OS X, you can install Make as part of the UNIX
@@ -32,7 +26,7 @@ following command from the repo's root directory:
 
     make
 
-The Polymaps build process is exceptionally simple. First, all the JavaScript
+The build process is exceptionally simple. First, all the JavaScript
 files are concatenated (using `cat`); the order of files is important to
 preserve dependencies. This produces the file `polymaps.js`. Second, this file
 is put through Google's [Closure
