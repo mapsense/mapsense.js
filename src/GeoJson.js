@@ -63,6 +63,9 @@ ms.geoJson = function(fetch) {
       stream: function(stream) {
         return {
           point: function(x, y) {
+            // Latitudes at the poles (or beyond!) result in unrenderable NaN's and Infinities.
+	    if (y < -90) y = -89.999;
+            else if (y > 90) y = 89.999;
             var p = tileProj.locationPoint({ lon: x, lat: y});
             stream.point(Math.round(2 * p.x) / 2, Math.round(2 * p.y) / 2);
           },
