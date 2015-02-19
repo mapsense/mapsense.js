@@ -29,19 +29,19 @@ JS_COMPILER = \
 	java -jar lib/google-compiler/compiler-20100616.jar \
 	--charset UTF-8
 
-all: polymaps.min.js polymaps.js
+all: mapsense.min.js mapsense.js
 
 %.min.js: %.js
 	$(JS_COMPILER) < $^ > $@
 
-polymaps.min.js: polymaps.js
+mapsense.min.js: mapsense.js
 	rm -f $@
-	$(JS_COMPILER) < polymaps.js >> $@
+	$(JS_COMPILER) < mapsense.js >> $@
 
-polymaps.js: $(JS_FILES) Makefile
+mapsense.js: $(JS_FILES) Makefile
 	rm -f $@
 	cat $(JS_FILES) >> $@
 	chmod a-w $@
 
 clean:
-	rm -rf polymaps.js polymaps.min.js
+	rm -rf mapsense.js mapsense.min.js
