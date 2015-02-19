@@ -62,7 +62,11 @@ ms.geoJson = function(fetch) {
       stream: function(stream) {
         return {
           point: function(x, y) {
-            var p = tileProj.locationPoint({ lon: x, lat: y});
+            // Latitudes at the poles (or beyond!) result in unrenderable NaN's and Infinities.
+            var epsilon = 1.0e-6;
+            y = Math.min(90 - epsilon, y);
+            y = Math.max(-90 + epsilon, y);
+            var p = tileProj.locationPoint({ lon: x, lat: y });
             stream.point(Math.round(2 * p.x) / 2, Math.round(2 * p.y) / 2);
           },
           sphere: function() { stream.sphere(); },
