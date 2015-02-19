@@ -30,13 +30,23 @@ ms.topoJson = function(fetch) {
 
   var topologyFeatures = function(topology) {
     function convert(topology, object, layer, features) {
-      if (object.type == 'GeometryCollection' && !object.properties) {
+      var collection = object.type == 'GeometryCollection';
+      if (collection && !object.properties && object.id == null) { 
+        // It's a GeometryCollection and doesn't have metadata usually associated with a Feature.
+        // Interpret it as a FeatureCollection.
         object.geometries.forEach(function(g) {
           convert(topology, g, layer, features);
         });
       }
       else {
-        var feature = topojson.feature(topology, object);
+        var feature;
+        if (collection) {
+          // It's a GeometryCollection and has metadata usually associated with a Feature.
+          // Interpret it as a Feature.
+          feature = topojson.feature(topology, {type: "GeometryCollection", geometries: [object]}).features[0];
+        } else {
+          feature = topojson.feature(topology, object);
+        }
         feature.properties = { layer: layer };
         if (object.properties) {
           Object.keys(object.properties).forEach(function(property) {
