@@ -30,21 +30,18 @@ ms.topoJson = function(fetch) {
 
   var topologyFeatures = function(topology) {
     function convert(topology, object, layer, features) {
-      if (object.type == "GeometryCollection" && !object.properties) {
-        object.geometries.forEach(function(g) {
-          convert(topology, g, layer, features);
-        });
+      var featureOrCollection = topojson.feature(topology, object),
+          layerFeatures;
+
+      if (featureOrCollection.type === "FeatureCollection") {
+        layerFeatures = featureOrCollection.features;
+      } else {
+        layerFeatures = [featureOrCollection];
       }
-      else {
-        var feature = topojson.feature(topology, object);
-        feature.properties = { layer: layer };
-        if (object.properties) {
-          Object.keys(object.properties).forEach(function(property) {
-            feature.properties[property] = object.properties[property];
-          });
-        }
-        features.push(feature);
-      }
+      layerFeatures.forEach(function(f) {
+        f.properties.layer = layer;
+      });
+      features.push.apply(features, layerFeatures);
     }
 
     var features = [];
