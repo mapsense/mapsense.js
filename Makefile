@@ -26,7 +26,7 @@ JS_FILES = \
 	src/end.js
 
 JS_COMPILER = \
-	java -jar lib/google-compiler/compiler-20100616.jar \
+	java -jar lib/google-compiler/compiler-20131014.jar \
 	--charset UTF-8
 
 all: polymaps.min.js polymaps.js
