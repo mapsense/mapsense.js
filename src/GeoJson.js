@@ -9,6 +9,7 @@ ms.geoJson = function(fetch) {
       clipRect = clipPath.appendChild(ms.svg("rect")),
       scale = "auto",
       zoom = null,
+      pointRadius = 4.5,
       features,
       tileBackground = true,
       selection;
@@ -20,38 +21,29 @@ ms.geoJson = function(fetch) {
 
   function projection(proj) {
     var l = {lat: 0, lon: 0};
-    return function(coordinates) {
+    return function(coordinates, c) {
       l.lat = coordinates[1];
       l.lon = coordinates[0];
       var p = proj(l);
-      coordinates.x = p.x;
-      coordinates.y = p.y;
+      c.x = p.x;
+      c.y = p.y;
       return p;
     };
   }
 
   function rescale(o, e, k) {
-    return o.type in rescales && rescales[o.type](o, e, k);
+    var g = o.geometry;
+    return g.type in rescales && rescales[g.type](o, e, k);
   }
 
   var rescales = {
 
     Point: function (o, e, k) {
-      var p = o.coordinates;
-      e.setAttribute("transform", "translate(" + p.x + "," + p.y + ")" + k);
+      e.setAttribute("transform", "translate(" + o.x + "," + o.y + ")" + k);
     },
 
     MultiPoint: function (o, e, k) {
-      var c = o.coordinates,
-          i = -1,
-          n = p.length,
-          x = e.firstChild,
-          p;
-      while (++i < n) {
-        p = c[i];
-        x.setAttribute("transform", "translate(" + p.x + "," + p.y + ")" + k);
-        x = x.nextSibling;
-      }
+      e.setAttribute("transform", "translate(" + o.x + "," + o.y + ")" + k);
     }
 
   };
@@ -82,8 +74,7 @@ ms.geoJson = function(fetch) {
   function load(tile, proj) {
     var g = tile.element = ms.svg("g");
 
-    var tileProj = proj(tile),
-        path = projectSpherical(tileProj);
+    var tileProj = proj(tile);
 
     tile.features = [];
 
@@ -101,7 +92,7 @@ ms.geoJson = function(fetch) {
           .attr("class", "tile-background");
       }
 
-      draw(g, data, path, updated, tile);
+      draw(g, data, tileProj, updated, tile);
 
       tile.ready = true;
       updated.push.apply(tile.features, updated);
@@ -115,29 +106,74 @@ ms.geoJson = function(fetch) {
     }
   }
 
-  function draw(g, data, path, updated, tile) {
-    var update = d3.select(g)
+  function copyObject(source) {
+    var copy = {};
+    for (var property in source) {
+      copy[property] = source[property];
+    }
+    return copy;
+  }
+
+  function projectPoint(p, proj) {
+    proj(p.geometry.coordinates, p);
+    return p;
+  }
+
+  function projectPointsForMultiPoint(mp, proj) {
+    var length = mp.geometry.coordinates.length;
+    var points = [];
+    for (var i = 0; i < length; i++) {
+      var p = copyObject(mp);
+      proj(p.geometry.coordinates[i], p);
+      points.push(p);
+    }
+    return points;
+  }
+
+  function draw(g, data, tileProj, updated, tile) {
+    var proj = projection(tileProj.locationPoint);
+
+    var path = projectSpherical(tileProj);
+
+    var pathFeatures = [],
+        pointFeatures = [];
+
+    data.features.forEach(function(f) {
+      if (f.geometry.type === "Point")
+        pointFeatures.push(projectPoint(f, proj));
+      else if (f.geometry.type === "MultiPoint")
+        pointFeatures.push.apply(pointFeatures, projectPointsForMultiPoint(f, proj));
+      else
+        pathFeatures.push(f);
+    });
+
+    var pathUpdate = d3.select(g)
       .selectAll("path")
-      .data(data.features);
-
-    update.exit()
-      .remove();
-
-    var enter = update
+      .data(pathFeatures)
       .enter()
-      .append("path");
+      .append("path")
+      .attr("d", function(f) { return path(f); });
 
     if (updated)
-      enter.each(function(f) { updated.push({ element: this, data: f }); });
+      pathUpdate.each(function(f) { updated.push({ element: this, data: f }); });
 
-    if (selection)
-      selection(update);
+    var pointUpdate = d3.select(g)
+      .selectAll("circle")
+      .data(pointFeatures)
+      .enter()
+      .append("circle")
+      .attr("transform", function(f) {
+        return "translate(" + f.x + "," + f.y + ")";
+      })
+      .attr("r", pointRadius);
 
-    var paths = [];
-    update.each(function(f, i) {
-      paths[i] = path(f);
-    });
-    update.attr("d", function(f, i) { return paths[i]; });
+    if (updated)
+      pointUpdate.each(function(f) { updated.push({ element: this, data: f }); });
+
+    if (selection) {
+      pathUpdate.push.apply(pathUpdate, pointUpdate);
+      selection(pathUpdate);
+    }
   }
 
   function unload(tile) {
@@ -160,16 +196,9 @@ ms.geoJson = function(fetch) {
           k = "scale(" + Math.pow(2, tile.zoom - zoom) + ")";
           i = -1;
           n = (features = tile.features).length;
-          while (++i < n) rescale((feature = features[i]).data.geometry, feature.element, k);
+          while (++i < n) rescale((feature = features[i]).data, feature.element, k);
           tile.scale = zoom;
         }
-      }
-    } else {
-      for (key in tiles) {
-        i = -1;
-        n = (features = (tile = tiles[key]).features).length;
-        while (++i < n) rescale((feature = features[i]).data.geometry, feature.element, "");
-        delete tile.scale;
       }
     }
   }
@@ -242,8 +271,11 @@ ms.geoJson = function(fetch) {
   geoJson.show = function(tile) {
     if (clip) tile.element.setAttribute("clip-path", clipHref);
     else tile.element.removeAttribute("clip-path");
-    if (selection)
-      selection(d3.select(tile.element).selectAll("path"));
+    if (selection) {
+      var s = d3.select(tile.element).selectAll("path");
+      s.push.apply(s, d3.select(tile.element).selectAll("circle"));
+      selection(s);
+    }
     geoJson.dispatch({type: "show", tile: tile, features: tile.features});
     return geoJson;
   };
