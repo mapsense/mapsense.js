@@ -112,7 +112,6 @@ ms.map = function() {
   map.container = function(x) {
     if (!arguments.length) return container;
     container = x;
-    container.setAttribute("class", "map");
     container.appendChild(rect);
     return map.resize(); // infer size
   };
