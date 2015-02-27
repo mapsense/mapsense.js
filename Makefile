@@ -22,6 +22,7 @@ JS_FILES = \
 	src/Interact.js \
 	src/Compass.js \
 	src/Grid.js \
+	src/Attribution.js \
 	src/Stylist.js \
 	src/end.js
 
