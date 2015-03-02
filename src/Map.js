@@ -4,7 +4,7 @@ ms.map = function() {
       size,
       sizeActual = zero,
       sizeRadius = zero, // sizeActual / 2
-      tileSize = {x: 256, y: 256},
+      tileSize = {x: 512, y: 512},
       center = {lat: 37.76487, lon: -122.41948},
       zoom = 12,
       zoomFraction = 0,
