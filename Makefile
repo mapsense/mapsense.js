@@ -27,7 +27,7 @@ JS_FILES = \
 	src/end.js
 
 JS_COMPILER = \
-	java -jar lib/google-compiler/compiler-20100616.jar \
+	java -jar lib/google-compiler/compiler-20150126.jar \
 	--charset UTF-8
 
 all: mapsense.min.js mapsense.js
