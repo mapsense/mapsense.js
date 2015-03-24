@@ -17,17 +17,29 @@ ms.queue = (function() {
     return false;
   }
 
-  function request(url, callback, mimeType, responseType) {
+  function merge(dest, src) {
+    for (var property in src) {
+      dest[property] = src[property];
+    }
+    return dest;
+  }
+
+  function request(url, callback, options) {
     var req;
 
     function send() {
       req = new XMLHttpRequest();
       req.open("GET", url, true);
-      if (mimeType && req.overrideMimeType) {
-        req.overrideMimeType(mimeType);
-      }
-      if (responseType) {
-        req.responseType = responseType;
+      if (options) {
+        if (options.mimeType && req.overrideMimeType)
+          req.overrideMimeType(options.mimeType);
+        if (options.responseType)
+          req.responseType = options.responseType;
+        if (options.xhrFields) {
+          for (var f in options.xhrFields) {
+            req[f] = options.xhrFields[f];
+          }
+        }
       }
       req.onreadystatechange = function(e) {
         if (req.readyState == 4) {
@@ -53,7 +65,7 @@ ms.queue = (function() {
   function text(url, callback, mimeType) {
     return request(url, function(req) {
       if (req.responseText) callback(req.responseText);
-    }, mimeType);
+    }, { mimeType: mimeType });
   }
 
   /*
@@ -61,22 +73,26 @@ ms.queue = (function() {
    * browsers don't assign a proper MIME type for local files.
    */
 
-  function json(url, callback) {
+  function json(url, callback, options) {
     return request(url, function(req) {
       if (req.responseText) callback(JSON.parse(req.responseText));
-    }, "application/json");
+    }, merge({ mimeType: "application/json" }, options));
   }
 
-  function xml(url, callback) {
+  function xml(url, callback, options) {
     return request(url, function(req) {
       if (req.responseXML) callback(req.responseXML);
-    }, "application/xml");
+    }, merge({ mimeType: "application/xml" }, options));
   }
 
-  function octetStream(url, callback) {
+  function octetStream(url, callback, options) {
+    var defaultOptions = {
+      mimeType: "application/octet-stream",
+      responseType: "arraybuffer"
+    };
     return request(url, function(req) {
       if (req.response) callback(req.response);
-    }, "application/octet-stream", "arraybuffer");
+    }, merge(defaultOptions, options));
   }
 
   function image(image, src, callback) {
