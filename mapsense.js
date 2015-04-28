@@ -1570,7 +1570,10 @@ ms.dblclick = function() {
     var z = map.zoom();
     if (e.shiftKey) z = Math.ceil(z) - z - 1;
     else z = 1 - z + Math.floor(z);
-    zoom === "mouse" ? map.zoomBy(z, map.mouse(e)) : map.zoomBy(z);
+    if (zoom === "mouse")
+      map.zoomBy(z, map.mouse(e));
+    else
+      map.zoomBy(z);
   }
 
   dblclick.zoom = function(x) {
@@ -1920,7 +1923,10 @@ ms.hash = function() {
     if (map = x) {
       map.on("move", move);
       window.addEventListener("hashchange", hashchange, false);
-      location.hash ? hashchange() : move();
+      if (location.hash)
+        hashchange();
+      else
+        move();
     }
     return hash;
   };
@@ -2125,7 +2131,10 @@ ms.compass = function() {
 
   function panBy(x) {
     return function() {
-      x ? this.setAttribute("class", "active") : this.removeAttribute("class");
+      if (x)
+        this.setAttribute("class", "active");
+      else
+        this.removeAttribute("class");
       panDirection = x;
     };
   }
@@ -2234,9 +2243,10 @@ ms.compass = function() {
     g.setAttribute("transform", "translate(" + x + "," + y + ")");
     dragRect.setAttribute("transform", "translate(" + -x + "," + -y + ")");
     for (var i in ticks) {
-      i == map.zoom()
-          ? ticks[i].setAttribute("class", "active")
-          : ticks[i].removeAttribute("class");
+      if (i == map.zoom())
+        ticks[i].setAttribute("class", "active");
+      else
+        ticks[i].removeAttribute("class");
     }
   }
 
@@ -2491,18 +2501,26 @@ ms.stylist = function() {
       for (j = 0; j < na; ++j) {
         v = (x = attrs[j]).value;
         if (typeof v === "function") v = v.call(null, d);
-        v == null ? (x.name.local
-            ? o.removeAttributeNS(x.name.space, x.name.local)
-            : o.removeAttribute(x.name)) : (x.name.local
-            ? o.setAttributeNS(x.name.space, x.name.local, v)
-            : o.setAttribute(x.name, v));
+        if (v == null) {
+          if (x.name.local)
+            o.removeAttributeNS(x.name.space, x.name.local);
+          else
+            o.removeAttribute(x.name);
+        }
+        else {
+          if (x.name.local)
+            o.setAttributeNS(x.name.space, x.name.local, v);
+          else
+            o.setAttribute(x.name, v);
+        }
       }
       for (j = 0; j < ns; ++j) {
         v = (x = styles[j]).value;
         if (typeof v === "function") v = v.call(null, d);
-        v == null
-            ? o.style.removeProperty(x.name)
-            : o.style.setProperty(x.name, v, x.priority);
+        if (v == null)
+          o.style.removeProperty(x.name);
+        else
+          o.style.setProperty(x.name, v, x.priority);
       }
       if (v = title) {
         if (typeof v === "function") v = v.call(null, d);
