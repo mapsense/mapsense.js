@@ -44,7 +44,10 @@ ms.hash = function() {
     if (map = x) {
       map.on("move", move);
       window.addEventListener("hashchange", hashchange, false);
-      location.hash ? hashchange() : move();
+      if (location.hash)
+        hashchange();
+      else
+        move();
     }
     return hash;
   };

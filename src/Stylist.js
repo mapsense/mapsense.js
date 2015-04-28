@@ -20,18 +20,26 @@ ms.stylist = function() {
       for (j = 0; j < na; ++j) {
         v = (x = attrs[j]).value;
         if (typeof v === "function") v = v.call(null, d);
-        v == null ? (x.name.local
-            ? o.removeAttributeNS(x.name.space, x.name.local)
-            : o.removeAttribute(x.name)) : (x.name.local
-            ? o.setAttributeNS(x.name.space, x.name.local, v)
-            : o.setAttribute(x.name, v));
+        if (v == null) {
+          if (x.name.local)
+            o.removeAttributeNS(x.name.space, x.name.local);
+          else
+            o.removeAttribute(x.name);
+        }
+        else {
+          if (x.name.local)
+            o.setAttributeNS(x.name.space, x.name.local, v);
+          else
+            o.setAttribute(x.name, v);
+        }
       }
       for (j = 0; j < ns; ++j) {
         v = (x = styles[j]).value;
         if (typeof v === "function") v = v.call(null, d);
-        v == null
-            ? o.style.removeProperty(x.name)
-            : o.style.setProperty(x.name, v, x.priority);
+        if (v == null)
+          o.style.removeProperty(x.name);
+        else
+          o.style.setProperty(x.name, v, x.priority);
       }
       if (v = title) {
         if (typeof v === "function") v = v.call(null, d);

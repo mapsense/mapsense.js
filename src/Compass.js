@@ -83,7 +83,10 @@ ms.compass = function() {
 
   function panBy(x) {
     return function() {
-      x ? this.setAttribute("class", "active") : this.removeAttribute("class");
+      if (x)
+        this.setAttribute("class", "active");
+      else
+        this.removeAttribute("class");
       panDirection = x;
     };
   }
@@ -192,9 +195,10 @@ ms.compass = function() {
     g.setAttribute("transform", "translate(" + x + "," + y + ")");
     dragRect.setAttribute("transform", "translate(" + -x + "," + -y + ")");
     for (var i in ticks) {
-      i == map.zoom()
-          ? ticks[i].setAttribute("class", "active")
-          : ticks[i].removeAttribute("class");
+      if (i == map.zoom())
+        ticks[i].setAttribute("class", "active");
+      else
+        ticks[i].removeAttribute("class");
     }
   }
 

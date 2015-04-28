@@ -8,7 +8,10 @@ ms.dblclick = function() {
     var z = map.zoom();
     if (e.shiftKey) z = Math.ceil(z) - z - 1;
     else z = 1 - z + Math.floor(z);
-    zoom === "mouse" ? map.zoomBy(z, map.mouse(e)) : map.zoomBy(z);
+    if (zoom === "mouse")
+      map.zoomBy(z, map.mouse(e));
+    else
+      map.zoomBy(z);
   }
 
   dblclick.zoom = function(x) {
