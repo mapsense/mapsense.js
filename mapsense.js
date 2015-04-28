@@ -1685,7 +1685,7 @@ ms.wheel = function() {
         } catch (error) {
           // Derp! Hope for the best?
         }
-        delta *= .001;
+        delta *= 0.001;
       }
 
       /* If smooth zooming is disabled, batch events into unit steps. */
@@ -2162,8 +2162,8 @@ ms.compass = function() {
 
   function pan(by) {
     var x = Math.SQRT1_2 * r,
-        y = r * .7,
-        z = r * .2,
+        y = r * 0.7,
+        z = r * 0.2,
         g = ms.svg("g"),
         dir = g.appendChild(ms.svg("path")),
         chv = g.appendChild(ms.svg("path"));
@@ -2181,7 +2181,7 @@ ms.compass = function() {
   }
 
   function zoom(by) {
-    var x = r * .4,
+    var x = r * 0.4,
         y = x / 2,
         g = ms.svg("g"),
         back = g.appendChild(ms.svg("path")),
@@ -2205,15 +2205,15 @@ ms.compass = function() {
   }
 
   function tick(i) {
-    var x = r * .2,
-        y = r * .4,
+    var x = r * 0.2,
+        y = r * 0.4,
         g = ms.svg("g"),
         back = g.appendChild(ms.svg("rect")),
         chev = g.appendChild(ms.svg("path"));
     back.setAttribute("pointer-events", "all");
     back.setAttribute("fill", "none");
     back.setAttribute("x", -y);
-    back.setAttribute("y", -.75 * y);
+    back.setAttribute("y", -0.75 * y);
     back.setAttribute("width", 2 * y);
     back.setAttribute("height", 1.5 * y);
     chev.setAttribute("class", "chevron");
@@ -2277,18 +2277,18 @@ ms.compass = function() {
       zoomContainer = g.appendChild(ms.svg("g"));
       zoomContainer.setAttribute("class", "zoom");
 
-      var j = -.5;
+      var j = -0.5;
       if (zoomStyle == "big") {
         ticks = {};
         for (var i = map.zoomRange()[0], j = 0; i <= map.zoomRange()[1]; i++, j++) {
           (ticks[i] = zoomContainer.appendChild(tick(i)))
-              .setAttribute("transform", "translate(0," + (-(j + .75) * r * .4) + ")");
+              .setAttribute("transform", "translate(0," + (-(j + 0.75) * r * 0.4) + ")");
         }
       }
 
-      var p = panStyle == "none" ? .4 : 2;
-      zoomContainer.setAttribute("transform", "translate(0," + r * (/^top-/.test(position) ? (p + (j + .5) * .4) : -p) + ")");
-      zoomContainer.appendChild(zoom(+1)).setAttribute("transform", "translate(0," + (-(j + .5) * r * .4) + ")");
+      var p = panStyle == "none" ? 0.4 : 2;
+      zoomContainer.setAttribute("transform", "translate(0," + r * (/^top-/.test(position) ? (p + (j + 0.5) * 0.4) : -p) + ")");
+      zoomContainer.appendChild(zoom(+1)).setAttribute("transform", "translate(0," + (-(j + 0.5) * r * 0.4) + ")");
       zoomContainer.appendChild(zoom(-1)).setAttribute("transform", "scale(-1)");
     } else {
       zoomContainer = null;
