@@ -202,10 +202,10 @@ ms.url = function(template) {
           var nw = ms.map.coordinateLocation({row: c.row, column: column, zoom: c.zoom}),
               se = ms.map.coordinateLocation({row: c.row + 1, column: column + 1, zoom: c.zoom}),
               pn = Math.ceil(Math.log(c.zoom) / Math.LN2);
-          return se.lat.toFixed(pn)
-              + "," + nw.lon.toFixed(pn)
-              + "," + nw.lat.toFixed(pn)
-              + "," + se.lon.toFixed(pn);
+          return se.lat.toFixed(pn) +
+              "," + nw.lon.toFixed(pn) +
+              "," + nw.lat.toFixed(pn) +
+              "," + se.lon.toFixed(pn);
         }
       }
       return v;
@@ -832,14 +832,14 @@ ms.layer = function(load, unload) {
     // set the layer transform
     var roundedZoomFraction = roundZoom(Math.pow(2, mapZoomFraction));
     container.setAttribute("transform",
-        "translate("
-          + Math.round(mapSize.x / 2 - col * tileSize.x * roundedZoomFraction)
-          + ","
-          + Math.round(mapSize.y / 2 - row * tileSize.y * roundedZoomFraction)
-        + ")"
-        + (mapAngle ? "rotate(" + mapAngle / Math.PI * 180 + ")" : "")
-        + (mapZoomFraction ? "scale(" + roundedZoomFraction + ")" : "")
-        + (transform ? transform.zoomFraction(mapZoomFraction) : ""));
+        "translate(" +
+          Math.round(mapSize.x / 2 - col * tileSize.x * roundedZoomFraction) +
+          "," +
+          Math.round(mapSize.y / 2 - row * tileSize.y * roundedZoomFraction) +
+        ")" +
+        (mapAngle ? "rotate(" + mapAngle / Math.PI * 180 + ")" : "") +
+        (mapZoomFraction ? "scale(" + roundedZoomFraction + ")" : "") +
+        (transform ? transform.zoomFraction(mapZoomFraction) : ""));
 
     // layer-specific coordinate transform
     if (transform) {
@@ -967,9 +967,9 @@ ms.layer = function(load, unload) {
     for (var key in newLocks) {
       var t = newLocks[key],
           k = roundZoom(Math.pow(2, t.level = t.zoom - tileCenter.zoom));
-      var transform = "translate("
-        + Math.round(t.x = tileSize.x * (t.column - tileCenter.column * k)) + "px" + ","
-        + Math.round(t.y = tileSize.y * (t.row - tileCenter.row * k)) + "px" + ")";
+      var transform = "translate(" +
+        Math.round(t.x = tileSize.x * (t.column - tileCenter.column * k)) + "px" + "," +
+        Math.round(t.y = tileSize.y * (t.row - tileCenter.row * k)) + "px" + ")";
       d3.select(t.element).style("transform", transform);
       d3.select(t.element).style("-webkit-transform", transform);
       d3.select(t.element).style("-ms-transform", transform);
@@ -1108,9 +1108,9 @@ function scanSpans(e0, e1, ymin, ymax, scanLine) {
       y1 = Math.min(ymax, Math.ceil(e1.y1));
 
   // sort edges by x-coordinate
-  if ((e0.x0 == e1.x0 && e0.y0 == e1.y0)
-      ? (e0.x0 + e1.dy / e0.dy * e0.dx < e1.x1)
-      : (e0.x1 - e1.dy / e0.dy * e0.dx < e1.x0)) {
+  if ((e0.x0 == e1.x0 && e0.y0 == e1.y0) ?
+      (e0.x0 + e1.dy / e0.dy * e0.dx < e1.x1) :
+      (e0.x1 - e1.dy / e0.dy * e0.dx < e1.x0)) {
     var t = e0; e0 = e1; e1 = t;
   }
 
@@ -1898,9 +1898,9 @@ ms.hash = function() {
     var center = map.center(),
         zoom = map.zoom(),
         precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
-    return "#" + zoom.toFixed(2)
-             + "/" + center.lat.toFixed(precision)
-             + "/" + center.lon.toFixed(precision);
+    return "#" + zoom.toFixed(2) +
+             "/" + center.lat.toFixed(precision) +
+             "/" + center.lon.toFixed(precision);
   };
 
   function move() {
