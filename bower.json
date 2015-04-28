@@ -1,0 +1,10 @@
+{
+  "name": "mapsense.js",
+  "version": "1.0.0-beta",
+  "main": "mapsense.js",
+  "ignore": [
+    "Makefile",
+    "lib",
+    "src"
+  ]
+}
