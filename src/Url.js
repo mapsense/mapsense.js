@@ -21,10 +21,10 @@ ms.url = function(template) {
           var nw = ms.map.coordinateLocation({row: c.row, column: column, zoom: c.zoom}),
               se = ms.map.coordinateLocation({row: c.row + 1, column: column + 1, zoom: c.zoom}),
               pn = Math.ceil(Math.log(c.zoom) / Math.LN2);
-          return se.lat.toFixed(pn)
-              + "," + nw.lon.toFixed(pn)
-              + "," + nw.lat.toFixed(pn)
-              + "," + se.lon.toFixed(pn);
+          return se.lat.toFixed(pn) +
+              "," + nw.lon.toFixed(pn) +
+              "," + nw.lat.toFixed(pn) +
+              "," + se.lon.toFixed(pn);
         }
       }
       return v;

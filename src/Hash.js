@@ -19,9 +19,9 @@ ms.hash = function() {
     var center = map.center(),
         zoom = map.zoom(),
         precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
-    return "#" + zoom.toFixed(2)
-             + "/" + center.lat.toFixed(precision)
-             + "/" + center.lon.toFixed(precision);
+    return "#" + zoom.toFixed(2) +
+             "/" + center.lat.toFixed(precision) +
+             "/" + center.lon.toFixed(precision);
   };
 
   function move() {
