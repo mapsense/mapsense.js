@@ -364,7 +364,7 @@ ms.queue = (function() {
     }, merge(defaultOptions, options));
   }
 
-  function image(image, src, callback) {
+  function image(imageElement, src, callback) {
     var img;
 
     function send() {
@@ -379,7 +379,7 @@ ms.queue = (function() {
         process();
       };
       img.src = src;
-      image.setAttributeNS(ms.ns.xlink, "href", src);
+      imageElement.setAttributeNS(ms.ns.xlink, "href", src);
     }
 
     function abort(hard) {
