@@ -1050,7 +1050,7 @@ ms.layer = function(load, unload) {
 
   layer.visible = function(x) {
     if (!arguments.length) return visible;
-    if (visible = x) container.removeAttribute("visibility")
+    if (visible = x) container.removeAttribute("visibility");
     else container.setAttribute("visibility", "hidden");
     if (map) move();
     return layer;
