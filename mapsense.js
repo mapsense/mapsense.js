@@ -426,6 +426,15 @@ ms.map = function() {
     {lat: y2lat(ymax), lon: Infinity}
   ];
 
+  var interact = ms.interact(),
+      interactionEnabled = true;
+
+  map.interact = function(x) {
+    if (!arguments.length) return interact;
+    interactionEnabled = x;
+    interact.map(interactionEnabled ? map : null);
+  };
+
   map.locationCoordinate = function(l) {
     var c = ms.map.locationCoordinate(l),
         k = Math.pow(2, zoom);
@@ -516,6 +525,8 @@ ms.map = function() {
     if (!arguments.length) return container;
     container = x;
     container.appendChild(rect);
+    if (interactionEnabled)
+      map.add(interact);
     return map.resize(); // infer size
   };
 
