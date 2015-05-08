@@ -1,5 +1,5 @@
 (function(){
-  var mapsense = {version: "1.0.0"},
+  var mapsense = {version: "1.0.1"},
       ms = mapsense;
 
   var zero = {x: 0, y: 0};
@@ -202,10 +202,10 @@ ms.url = function(template) {
           var nw = ms.map.coordinateLocation({row: c.row, column: column, zoom: c.zoom}),
               se = ms.map.coordinateLocation({row: c.row + 1, column: column + 1, zoom: c.zoom}),
               pn = Math.ceil(Math.log(c.zoom) / Math.LN2);
-          return se.lat.toFixed(pn)
-              + "," + nw.lon.toFixed(pn)
-              + "," + nw.lat.toFixed(pn)
-              + "," + se.lon.toFixed(pn);
+          return se.lat.toFixed(pn) +
+              "," + nw.lon.toFixed(pn) +
+              "," + nw.lat.toFixed(pn) +
+              "," + se.lon.toFixed(pn);
         }
       }
       return v;
@@ -364,7 +364,7 @@ ms.queue = (function() {
     }, merge(defaultOptions, options));
   }
 
-  function image(image, src, callback) {
+  function image(imageElement, src, callback) {
     var img;
 
     function send() {
@@ -379,7 +379,7 @@ ms.queue = (function() {
         process();
       };
       img.src = src;
-      image.setAttributeNS(ms.ns.xlink, "href", src);
+      imageElement.setAttributeNS(ms.ns.xlink, "href", src);
     }
 
     function abort(hard) {
@@ -425,6 +425,15 @@ ms.map = function() {
     {lat: y2lat(ymin), lon: -Infinity},
     {lat: y2lat(ymax), lon: Infinity}
   ];
+
+  var interact = ms.interact(),
+      interactionEnabled = true;
+
+  map.interact = function(x) {
+    if (!arguments.length) return interact;
+    interactionEnabled = x;
+    interact.map(interactionEnabled ? map : null);
+  };
 
   map.locationCoordinate = function(l) {
     var c = ms.map.locationCoordinate(l),
@@ -516,6 +525,8 @@ ms.map = function() {
     if (!arguments.length) return container;
     container = x;
     container.appendChild(rect);
+    if (container && interactionEnabled)
+      map.add(interact);
     return map.resize(); // infer size
   };
 
@@ -832,14 +843,14 @@ ms.layer = function(load, unload) {
     // set the layer transform
     var roundedZoomFraction = roundZoom(Math.pow(2, mapZoomFraction));
     container.setAttribute("transform",
-        "translate("
-          + Math.round(mapSize.x / 2 - col * tileSize.x * roundedZoomFraction)
-          + ","
-          + Math.round(mapSize.y / 2 - row * tileSize.y * roundedZoomFraction)
-        + ")"
-        + (mapAngle ? "rotate(" + mapAngle / Math.PI * 180 + ")" : "")
-        + (mapZoomFraction ? "scale(" + roundedZoomFraction + ")" : "")
-        + (transform ? transform.zoomFraction(mapZoomFraction) : ""));
+        "translate(" +
+          Math.round(mapSize.x / 2 - col * tileSize.x * roundedZoomFraction) +
+          "," +
+          Math.round(mapSize.y / 2 - row * tileSize.y * roundedZoomFraction) +
+        ")" +
+        (mapAngle ? "rotate(" + mapAngle / Math.PI * 180 + ")" : "") +
+        (mapZoomFraction ? "scale(" + roundedZoomFraction + ")" : "") +
+        (transform ? transform.zoomFraction(mapZoomFraction) : ""));
 
     // layer-specific coordinate transform
     if (transform) {
@@ -967,9 +978,9 @@ ms.layer = function(load, unload) {
     for (var key in newLocks) {
       var t = newLocks[key],
           k = roundZoom(Math.pow(2, t.level = t.zoom - tileCenter.zoom));
-      var transform = "translate("
-        + Math.round(t.x = tileSize.x * (t.column - tileCenter.column * k)) + "px" + ","
-        + Math.round(t.y = tileSize.y * (t.row - tileCenter.row * k)) + "px" + ")";
+      var transform = "translate(" +
+        Math.round(t.x = tileSize.x * (t.column - tileCenter.column * k)) + "px" + "," +
+        Math.round(t.y = tileSize.y * (t.row - tileCenter.row * k)) + "px" + ")";
       d3.select(t.element).style("transform", transform);
       d3.select(t.element).style("-webkit-transform", transform);
       d3.select(t.element).style("-ms-transform", transform);
@@ -1050,7 +1061,7 @@ ms.layer = function(load, unload) {
 
   layer.visible = function(x) {
     if (!arguments.length) return visible;
-    if (visible = x) container.removeAttribute("visibility")
+    if (visible = x) container.removeAttribute("visibility");
     else container.setAttribute("visibility", "hidden");
     if (map) move();
     return layer;
@@ -1108,9 +1119,9 @@ function scanSpans(e0, e1, ymin, ymax, scanLine) {
       y1 = Math.min(ymax, Math.ceil(e1.y1));
 
   // sort edges by x-coordinate
-  if ((e0.x0 == e1.x0 && e0.y0 == e1.y0)
-      ? (e0.x0 + e1.dy / e0.dy * e0.dx < e1.x1)
-      : (e0.x1 - e1.dy / e0.dy * e0.dx < e1.x0)) {
+  if ((e0.x0 == e1.x0 && e0.y0 == e1.y0) ?
+      (e0.x0 + e1.dy / e0.dy * e0.dx < e1.x1) :
+      (e0.x1 - e1.dy / e0.dy * e0.dx < e1.x0)) {
     var t = e0; e0 = e1; e1 = t;
   }
 
@@ -1570,7 +1581,10 @@ ms.dblclick = function() {
     var z = map.zoom();
     if (e.shiftKey) z = Math.ceil(z) - z - 1;
     else z = 1 - z + Math.floor(z);
-    zoom === "mouse" ? map.zoomBy(z, map.mouse(e)) : map.zoomBy(z);
+    if (zoom === "mouse")
+      map.zoomBy(z, map.mouse(e));
+    else
+      map.zoomBy(z);
   }
 
   dblclick.zoom = function(x) {
@@ -1685,7 +1699,7 @@ ms.wheel = function() {
         } catch (error) {
           // Derp! Hope for the best?
         }
-        delta *= .001;
+        delta *= 0.001;
       }
 
       /* If smooth zooming is disabled, batch events into unit steps. */
@@ -1895,9 +1909,9 @@ ms.hash = function() {
     var center = map.center(),
         zoom = map.zoom(),
         precision = Math.max(0, Math.ceil(Math.log(zoom) / Math.LN2));
-    return "#" + zoom.toFixed(2)
-             + "/" + center.lat.toFixed(precision)
-             + "/" + center.lon.toFixed(precision);
+    return "#" + zoom.toFixed(2) +
+             "/" + center.lat.toFixed(precision) +
+             "/" + center.lon.toFixed(precision);
   };
 
   function move() {
@@ -1920,7 +1934,10 @@ ms.hash = function() {
     if (map = x) {
       map.on("move", move);
       window.addEventListener("hashchange", hashchange, false);
-      location.hash ? hashchange() : move();
+      if (location.hash)
+        hashchange();
+      else
+        move();
     }
     return hash;
   };
@@ -2125,7 +2142,10 @@ ms.compass = function() {
 
   function panBy(x) {
     return function() {
-      x ? this.setAttribute("class", "active") : this.removeAttribute("class");
+      if (x)
+        this.setAttribute("class", "active");
+      else
+        this.removeAttribute("class");
       panDirection = x;
     };
   }
@@ -2162,8 +2182,8 @@ ms.compass = function() {
 
   function pan(by) {
     var x = Math.SQRT1_2 * r,
-        y = r * .7,
-        z = r * .2,
+        y = r * 0.7,
+        z = r * 0.2,
         g = ms.svg("g"),
         dir = g.appendChild(ms.svg("path")),
         chv = g.appendChild(ms.svg("path"));
@@ -2181,7 +2201,7 @@ ms.compass = function() {
   }
 
   function zoom(by) {
-    var x = r * .4,
+    var x = r * 0.4,
         y = x / 2,
         g = ms.svg("g"),
         back = g.appendChild(ms.svg("path")),
@@ -2205,15 +2225,15 @@ ms.compass = function() {
   }
 
   function tick(i) {
-    var x = r * .2,
-        y = r * .4,
+    var x = r * 0.2,
+        y = r * 0.4,
         g = ms.svg("g"),
         back = g.appendChild(ms.svg("rect")),
         chev = g.appendChild(ms.svg("path"));
     back.setAttribute("pointer-events", "all");
     back.setAttribute("fill", "none");
     back.setAttribute("x", -y);
-    back.setAttribute("y", -.75 * y);
+    back.setAttribute("y", -0.75 * y);
     back.setAttribute("width", 2 * y);
     back.setAttribute("height", 1.5 * y);
     chev.setAttribute("class", "chevron");
@@ -2234,9 +2254,10 @@ ms.compass = function() {
     g.setAttribute("transform", "translate(" + x + "," + y + ")");
     dragRect.setAttribute("transform", "translate(" + -x + "," + -y + ")");
     for (var i in ticks) {
-      i == map.zoom()
-          ? ticks[i].setAttribute("class", "active")
-          : ticks[i].removeAttribute("class");
+      if (i == map.zoom())
+        ticks[i].setAttribute("class", "active");
+      else
+        ticks[i].removeAttribute("class");
     }
   }
 
@@ -2277,18 +2298,18 @@ ms.compass = function() {
       zoomContainer = g.appendChild(ms.svg("g"));
       zoomContainer.setAttribute("class", "zoom");
 
-      var j = -.5;
+      var j = -0.5;
       if (zoomStyle == "big") {
         ticks = {};
         for (var i = map.zoomRange()[0], j = 0; i <= map.zoomRange()[1]; i++, j++) {
           (ticks[i] = zoomContainer.appendChild(tick(i)))
-              .setAttribute("transform", "translate(0," + (-(j + .75) * r * .4) + ")");
+              .setAttribute("transform", "translate(0," + (-(j + 0.75) * r * 0.4) + ")");
         }
       }
 
-      var p = panStyle == "none" ? .4 : 2;
-      zoomContainer.setAttribute("transform", "translate(0," + r * (/^top-/.test(position) ? (p + (j + .5) * .4) : -p) + ")");
-      zoomContainer.appendChild(zoom(+1)).setAttribute("transform", "translate(0," + (-(j + .5) * r * .4) + ")");
+      var p = panStyle == "none" ? 0.4 : 2;
+      zoomContainer.setAttribute("transform", "translate(0," + r * (/^top-/.test(position) ? (p + (j + 0.5) * 0.4) : -p) + ")");
+      zoomContainer.appendChild(zoom(+1)).setAttribute("transform", "translate(0," + (-(j + 0.5) * r * 0.4) + ")");
       zoomContainer.appendChild(zoom(-1)).setAttribute("transform", "scale(-1)");
     } else {
       zoomContainer = null;
@@ -2492,18 +2513,26 @@ ms.stylist = function() {
       for (j = 0; j < na; ++j) {
         v = (x = attrs[j]).value;
         if (typeof v === "function") v = v.call(null, d);
-        v == null ? (x.name.local
-            ? o.removeAttributeNS(x.name.space, x.name.local)
-            : o.removeAttribute(x.name)) : (x.name.local
-            ? o.setAttributeNS(x.name.space, x.name.local, v)
-            : o.setAttribute(x.name, v));
+        if (v == null) {
+          if (x.name.local)
+            o.removeAttributeNS(x.name.space, x.name.local);
+          else
+            o.removeAttribute(x.name);
+        }
+        else {
+          if (x.name.local)
+            o.setAttributeNS(x.name.space, x.name.local, v);
+          else
+            o.setAttribute(x.name, v);
+        }
       }
       for (j = 0; j < ns; ++j) {
         v = (x = styles[j]).value;
         if (typeof v === "function") v = v.call(null, d);
-        v == null
-            ? o.style.removeProperty(x.name)
-            : o.style.setProperty(x.name, v, x.priority);
+        if (v == null)
+          o.style.removeProperty(x.name);
+        else
+          o.style.setProperty(x.name, v, x.priority);
       }
       if (v = title) {
         if (typeof v === "function") v = v.call(null, d);
