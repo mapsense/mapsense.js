@@ -1,0 +1,73 @@
+.mapsense-blackprint {
+  &.labels {
+    font-size: 18;
+    fill: #999;
+    font-weight: 200;
+    text-transform: uppercase;
+    stroke-width: .3;
+    /*stroke: grey;*/
+    font-stretch: expanded;
+    letter-spacing: 1.5;
+    font-family: "Josefin Sans";
+  }
+
+  &.tile-background {
+    fill: rgb(20,20,20);
+  }
+  &.land {
+    fill: rgb(0,0,0);
+    stroke: rgb(189, 188, 188);
+    stroke-width: 1;
+  }
+  &.agriculture {
+    display: none;
+  }
+
+  &.water_polygon {
+    fill:rgb(20,20,20);
+  }
+  &.water_line {
+    stroke: rgb(50, 50, 50);
+    stroke-width: 1;
+    opacity: .3;
+    fill: none;
+  }
+  &.park {
+    fill: rgba(15, 15, 15, .3);
+    stroke: none;
+  }
+  &.building {
+    fill: none;
+    stroke: rgb(80, 80, 80);
+    stroke-width: .52;
+  }
+  &.school {
+    fill: rgb(15, 15, 15);
+    stroke: none;
+  }
+  &.other {
+    stroke: rgb(50, 50, 50);
+  }
+  &.urban {
+    fill: none;
+    stroke: none;
+  }
+
+  &.roads {
+    stroke: #222;
+  }
+  &.motorway, &.ne_10m_roads {
+    stroke: #333;
+  }
+  &.country_border, &.disputed_border {
+    stroke: grey;
+    stroke-dasharray: 3 3;
+    stroke-width: 1;
+    fill: none;
+  }
+  &.state_border {
+    stroke: grey;
+    stroke-dasharray: 3 3;
+    fill: none;
+  }
+}
