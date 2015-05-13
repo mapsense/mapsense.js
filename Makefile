@@ -23,6 +23,7 @@ JS_FILES = \
 	src/Compass.js \
 	src/Grid.js \
 	src/Attribution.js \
+	src/Basemap.js \
 	src/Stylist.js \
 	src/end.js
 
