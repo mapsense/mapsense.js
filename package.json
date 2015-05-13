@@ -12,5 +12,11 @@
       "url": "https://github.com/mapsense/mapsense.js/blob/master/LICENSE"
     }
   ],
-  "main": "mapsense.js"
+  "main": "mapsense.js",
+  "devDependencies": {
+  	"less": "^2.5.0"
+  },
+  "scripts": {
+  	"less": "lessc styles/mapsense.less mapsense.css"
+  }
 }

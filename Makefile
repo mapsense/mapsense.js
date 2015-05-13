@@ -30,7 +30,10 @@ JS_COMPILER = \
 	java -jar lib/google-compiler/compiler-20150126.jar \
 	--charset UTF-8
 
-all: mapsense.min.js mapsense.js
+all: mapsense.min.js mapsense.js mapsense.css
+
+mapsense.css:
+	@npm run less
 
 %.min.js: %.js
 	$(JS_COMPILER) < $^ > $@
@@ -45,4 +48,6 @@ mapsense.js: $(JS_FILES) Makefile
 	chmod a-w $@
 
 clean:
-	rm -rf mapsense.js mapsense.min.js
+	rm -rf mapsense.js mapsense.min.js mapsense.css
+
+.PHONY: mapsense.css

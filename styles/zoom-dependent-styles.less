@@ -1,0 +1,322 @@
+path {
+  vector-effect: non-scaling-stroke;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+/* zoom-dependent styling for roads & admins */
+/* general rules */
+path._undefined.none {
+  fill: none;
+}
+
+path.landuse.other { fill: none; stroke: none; }
+
+.park {
+  opacity: .3;
+}
+
+.water_line {
+  opacity: .5;
+  fill: none;
+}
+
+.runway {
+  opacity: .7;
+}
+
+.rail_major, .rail_minor {
+  stroke-dasharray: 4, 3;
+}
+
+.roads, .admin {
+  fill:none;
+}
+
+.disputed_border, .state_border {
+  stroke-dasharray: 8, 3;
+}
+
+/* admins */
+.country_border {
+  stroke-width: 2;
+}
+
+.admin._3, .admin._2, .admin._1 {
+  stroke-width: 1;
+}
+
+.admin._4 {
+  stroke-width: 1.5;
+}
+
+.state_border._2 {
+  stroke-width: .3;
+}
+
+.state_border._3, .state_border._4 {
+  stroke-width: .5;
+}
+
+.state_border._8, .state_border._9, .state_border._10, .state_border._11 {
+  stroke-width: 1.5;
+  opacity: .75;
+}
+
+.state_border._12, .state_border._13, .state_border._14, .state_border._15, .state_border._16, .state_border._17 {
+  stroke-width: 2;
+  stroke-dasharray: 10, 4;
+  opacity: .75;
+}
+
+/* roads */
+.ne_10m_roads._3 {
+  stroke-width: 0.5;
+}
+.ne_10m_roads._4, .ne_10m_roads._5 {
+  stroke-width: 0.75;  
+}
+.ne_10m_roads._6 {
+  opacity: 0.75;  
+}
+.motorway._6 {
+  stroke-width: .75;
+}
+.motorway._7, .ne_10m_roads._7 {
+  stroke-width: 1;
+}
+.arterial_major._7 {
+  stroke-width: .5;
+}
+
+/* zoom 8 */
+.ne_10m_roads._8 {
+  stroke-width: 1.25;
+  opacity: .75
+}
+.motorway._8 {
+  stroke-width: 1.25;
+  opacity: .75
+}
+.arterial_major._8 {
+  stroke-width: .5;
+  opacity: .75;
+}
+.arterial_minor._8 {
+  stroke-width: 0.5;
+  opacity: .5;
+}
+
+/* zoom 9 */
+.motorway._9 {
+  stroke-width: 1.5;
+}
+.arterial_major._9 {
+  stroke-width: .75;
+}
+.arterial_minor._9 {
+  stroke-width: 0.5;
+  opacity: .5;
+}
+
+/* zoom 10 */
+.motorway._10 {
+  stroke-width: 1.75;
+}
+.arterial_major._10 {
+  stroke-width: 1.25;
+}
+.arterial_minor._10 {
+  stroke-width: 1;
+}
+.road_med._10 {
+  stroke-width: .75;
+}
+
+/* zoom 11 */
+.motorway._11 {
+  stroke-width: 3;
+}
+.arterial_major._11, .runway._11 {
+  stroke-width: 1.75;
+}
+.arterial_minor._11 {
+  stroke-width: 1.25;
+}
+.road_med._11 {
+  stroke-width: 1;
+}
+.road_minor._11 {
+  stroke-width: .5;
+}
+
+/* zoom 12 */
+.motorway._12 {
+  stroke-width: 3.5;
+}
+.arterial_major._12, .runway._12 {
+  stroke-width: 2;
+}
+.arterial_minor._12 {
+  stroke-width: 1.5;
+}
+.road_med._12 {
+  stroke-width: 1;
+}
+.road_minor._12 {
+  stroke-width: .75;
+}
+
+/* zoom 13 */
+.motorway._13 {
+  stroke-width: 5;
+}
+.arterial_major._13, .runway._13 {
+  stroke-width: 3.5;
+}
+.arterial_minor._13 {
+  stroke-width: 2.5;
+}
+.road_med._13 {
+  stroke-width: 2;
+}
+.road_minor._13 {
+  stroke-width: 1.5;
+}
+.path._13, .water_line._13 {
+  stroke-width: 0.3;
+}
+
+/* zoom 14 */
+.motorway._14 {
+  stroke-width: 6.5;
+}
+.arterial_major._14, .runway._14 {
+  stroke-width: 4.75;
+}
+.arterial_minor._14 {
+  stroke-width: 4.25;
+}
+.road_med._14 {
+  stroke-width: 3.75;
+}
+.road_minor._14 {
+  stroke-width: 2.5;
+}
+.rail_minor._14 {
+  stroke-width: 1;
+}
+.rail_major._14 {
+  stroke-width: 1.5;
+}
+.path._14, .water_line._14 {
+  stroke-width: 0.75;
+}
+
+/* zoom 15 */
+.motorway._15 {
+  stroke-width: 8.5;
+}
+.arterial_major._15, .runway._15 {
+  stroke-width: 7;
+}
+.arterial_minor._15 {
+  stroke-width: 6;
+}
+.road_med._15 {
+  stroke-width: 5;
+}
+.road_minor._15 {
+  stroke-width: 4;
+}
+.rail_minor._15 {
+  stroke-width: 1.5;
+}
+.rail_major._15 {
+  stroke-width: 1.5;
+}
+.path._15, .water_line._15 {
+  stroke-width: 1;
+}
+
+/* zoom 16 */
+.motorway._16 {
+  stroke-width: 12;
+}
+.arterial_major._16, .runway._16 {
+  stroke-width: 9;
+}
+.arterial_minor._16 {
+  stroke-width: 8;
+}
+.road_med._16 {
+  stroke-width: 7;
+}
+.road_minor._16 {
+  stroke-width: 6;
+}
+.rail_minor._16 {
+  stroke-width: 1.5;
+}
+.rail_major._16 {
+  stroke-width: 2;
+}
+.path._16, .water_line._16 {
+  stroke-width: 2;
+}
+
+/* zoom 17 */
+.motorway._17 {
+  stroke-width: 15;
+}
+.arterial_major._17, .runway._17 {
+  stroke-width: 10;
+}
+.arterial_minor._17 {
+  stroke-width: 9;
+}
+.road_med._17 {
+  stroke-width: 8;
+}
+.road_minor._17 {
+  stroke-width: 8;
+}
+.rail_minor._17 {
+  stroke-width: 3;
+  stroke-dasharray: 7, 6;
+}
+.rail_major._17 {
+  stroke-width: 4;
+  stroke-dasharray: 7, 6;
+}
+.path._17, .water_line._17 {
+  stroke-width: 5;
+}
+
+/* zoom 18 */
+.motorway._18 {
+  stroke-width: 16;
+}
+.arterial_major._18, .runway._18 {
+  stroke-width: 10;
+}
+.arterial_minor._18 {
+  stroke-width: 10;
+}
+.road_med._18 {
+  stroke-width: 9;
+}
+.road_minor._18 {
+  stroke-width: 8;
+}
+.rail_minor._18 {
+  stroke-width: 3;
+  stroke-dasharray: 7, 6;
+}
+.rail_major._18 {
+  stroke-width: 4;
+  stroke-dasharray: 7, 6;
+}
+.path._18, .water_line._18 {
+  stroke-width: 5;
+}
