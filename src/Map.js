@@ -118,13 +118,21 @@ ms.map = function() {
   rect.setAttribute("visibility", "hidden");
   rect.setAttribute("pointer-events", "all");
 
+  var svgContainer = ms.svg("svg");
+  svgContainer.setAttribute("class", "mapsense-map");
+  svgContainer.appendChild(rect);
+
   map.container = function(x) {
     if (!arguments.length) return container;
     container = x;
-    container.appendChild(rect);
+    container.appendChild(svgContainer);
     if (interactionEnabled)
       map.add(interact);
     return map.resize(); // infer size
+  };
+
+  map.svgContainer = function() {
+    return svgContainer;
   };
 
   map.focusableParent = function() {
@@ -135,7 +143,7 @@ ms.map = function() {
   };
 
   map.mouse = function(e) {
-    var point = (container.ownerSVGElement || container).createSVGPoint();
+    var point = (svgContainer.ownerSVGElement || svgContainer).createSVGPoint();
     if ((bug44083 < 0) && (window.scrollX || window.scrollY)) {
       var svg = document.body.appendChild(ms.svg("svg"));
       svg.style.position = "absolute";
@@ -151,7 +159,7 @@ ms.map = function() {
       point.x = e.clientX;
       point.y = e.clientY;
     }
-    return point.matrixTransform(container.getScreenCTM().inverse());
+    return point.matrixTransform(svgContainer.getScreenCTM().inverse());
   };
 
   map.size = function(x) {

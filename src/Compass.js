@@ -305,7 +305,7 @@ ms.compass = function() {
       map.off("move", move).off("resize", move);
     }
     if (map = x) {
-      container = map.container();
+      container = map.svgContainer();
       container.appendChild(g);
       container.addEventListener("mousedown", mousedown, false);
       window = container.ownerDocument.defaultView;

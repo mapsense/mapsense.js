@@ -38,7 +38,7 @@ ms.attribution = function(text) {
     }
     map = x;
     if (map) {
-      map.container().appendChild(container);
+      map.svgContainer().appendChild(container);
       map.on("resize", resize);
       resize();
     }
