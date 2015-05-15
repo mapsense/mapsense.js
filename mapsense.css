@@ -962,3 +962,7 @@ path.landuse.other {
 .mapsense-vintage.path {
   stroke: #e1dede;
 }
+svg.mapsense-map {
+  width: 100%;
+  height: 100%;
+}

@@ -277,7 +277,7 @@ ms.layer = function(load, unload) {
     }
     map = x;
     if (map) {
-      map.container().appendChild(container);
+      map.svgContainer().appendChild(container);
       if (layer.init) layer.init(container);
       map.on("move", move).on("resize", move);
       move();

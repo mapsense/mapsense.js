@@ -53,7 +53,7 @@ ms.grid = function() {
     }
     if (map = x) {
       map.on("move", move).on("resize", move);
-      map.container().appendChild(g);
+      map.svgContainer().appendChild(g);
       map.dispatch({type: "move"});
     }
     return grid;
