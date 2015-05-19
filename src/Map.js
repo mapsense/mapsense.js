@@ -1,4 +1,4 @@
-ms.map = function() {
+ms.map = function(mapContainer) {
   var map = {},
       container,
       size,
@@ -23,13 +23,19 @@ ms.map = function() {
     {lat: y2lat(ymax), lon: Infinity}
   ];
 
-  var interact = ms.interact(),
-      interactionEnabled = true;
+  var interact = ms.interact();
+
+  if (typeof mapContainer === "string")
+    container = document.querySelector(mapContainer);
+  else
+    container = mapContainer;
+
+  if (!container)
+    throw new Error("Invalid map container.");
 
   map.interact = function(x) {
     if (!arguments.length) return interact;
-    interactionEnabled = x;
-    interact.map(interactionEnabled ? map : null);
+    interact.map(x ? map : null);
   };
 
   map.locationCoordinate = function(l) {
@@ -128,14 +134,10 @@ ms.map = function() {
   relativeContainer.style.setProperty("height", "100%");
 
   relativeContainer.appendChild(svgContainer);
+  container.appendChild(relativeContainer);
 
-  map.container = function(x) {
-    if (!arguments.length) return container;
-    container = x;
-    container.appendChild(relativeContainer);
-    if (interactionEnabled)
-      map.add(interact);
-    return map.resize(); // infer size
+  map.container = function() {
+    return container;
   };
 
   map.relativeContainer = function() {
@@ -311,7 +313,8 @@ ms.map = function() {
 
   map.dispatch = ms.dispatch(map);
 
-  return map;
+  map.interact(true);
+  return map.resize(); // infer size
 };
 
 function resizer(e) {
