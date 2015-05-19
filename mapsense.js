@@ -2484,9 +2484,14 @@ ms.basemap = function() {
   var basemap = ms.topoJson();
   var attribution = ms.attribution("<a href=\"https://developer.mapsense.co/tileViewer/?tileset=mapsense.earth\">©Mapsense ©OpenStreetMap</a>");
 
-  var baseURL = "https://{S}-api.mapsense.co/explore/api/universes/mapsense.earth/{Z}/{X}/{Y}.topojson?s=10&ringSpan=8";
+  var url = "https://{S}-api.mapsense.co/explore/api/universes/mapsense.earth/{Z}/{X}/{Y}.topojson?s=10&ringSpan=8";
   var apiKey;
   var style;
+
+  function urlWithKey() {
+    return ms.url(url + "&api-key=" + apiKey)
+      .hosts(["a", "b", "c", "d"]);
+  }
 
   var __map__ = basemap.map;
   basemap.map = function(x) {
@@ -2496,11 +2501,18 @@ ms.basemap = function() {
     return result;
   };
 
+  var __url__ = basemap.url;
+  basemap.url = function(x) {
+    if (!arguments.length) return url;
+    url = x;
+    __url__.call(basemap, urlWithKey());
+    return basemap;
+  }
+
   basemap.apiKey = function(x) {
     if (!arguments.length) return apiKey;
     apiKey = x;
-    basemap.url(ms.url(baseURL + "&api-key=" + apiKey)
-      .hosts(["a", "b", "c", "d"]));
+    __url__.call(basemap, urlWithKey());
     return basemap;
   };
 
