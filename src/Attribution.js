@@ -5,6 +5,10 @@ ms.attribution = function(html) {
 
   container.setAttribute("class", "mapsense-attribution");
 
+  attribution.container = function() {
+    return container;
+  };
+
   attribution.html = function(x) {
     if (!arguments.length) return container.innerHTML;
     container.innerHTML = x;

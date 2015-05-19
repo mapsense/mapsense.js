@@ -37,10 +37,13 @@ ms.basemap = function() {
   basemap.style = function(x) {
     if (!arguments.length) return style;
 
+    if (style)
+      attribution.container().classList.remove(style);
+
     style = x;
 
     basemap.selection(function(s) {
-      var styleClass = "mapsense-" + style;
+      var styleClass = style ? "mapsense-" + style : "";
       var zoomClass = "_" + Math.floor(basemap.map().zoom());
       s.attr("class", function(feature) {
         var classes = [ styleClass, zoomClass ];
@@ -53,6 +56,9 @@ ms.basemap = function() {
         return classes.join(" ");
       });
     });
+
+    if (style)
+      attribution.container().classList.add(style);
 
     return basemap;
   };
