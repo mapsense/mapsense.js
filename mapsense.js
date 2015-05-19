@@ -1231,7 +1231,7 @@ ms.geoJson = function(fetch) {
       zoom = null,
       pointRadius = 4.5,
       features,
-      tileBackground = true,
+      tileBackground = false,
       selection;
 
   container.setAttribute("fill-rule", "evenodd");
@@ -2576,6 +2576,7 @@ ms.basemap = function() {
   });
 
   basemap.style("light");
+  basemap.tileBackground(true);
   return basemap;
 };
 ms.stylist = function() {

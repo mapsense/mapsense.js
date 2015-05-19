@@ -71,5 +71,6 @@ ms.basemap = function() {
   });
 
   basemap.style("light");
+  basemap.tileBackground(true);
   return basemap;
 };

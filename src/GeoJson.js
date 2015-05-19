@@ -11,7 +11,7 @@ ms.geoJson = function(fetch) {
       zoom = null,
       pointRadius = 4.5,
       features,
-      tileBackground = true,
+      tileBackground = false,
       selection;
 
   container.setAttribute("fill-rule", "evenodd");
