@@ -1,3 +1,21 @@
+.mapsense-attribution {
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #ccc;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 10px;
+  font-size: 11px;
+  font-family: sans-serif;
+  line-height: 5px;
+  text-decoration: none;
+  user-select: none;
+  cursor: default;
+}
+.mapsense-attribution a {
+  text-decoration: none;
+  color: #ccc;
+}
 path {
   vector-effect: non-scaling-stroke;
   stroke-linejoin: round;
