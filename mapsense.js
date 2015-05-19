@@ -1374,13 +1374,18 @@ ms.geoJson = function(fetch) {
     if (updated)
       pathUpdate.each(function(f) { updated.push({ element: this, data: f }); });
 
+    var initialScale = "";
+    if (scale == "fixed") {
+      initialScale = "scale(" + Math.pow(2, tile.zoom - (tile.scale = geoJson.map().zoom())) + ")";
+    }
+
     var pointUpdate = d3.select(g)
       .selectAll("circle")
       .data(pointFeatures)
       .enter()
       .append("circle")
       .attr("transform", function(f) {
-        return "translate(" + f.x + "," + f.y + ")";
+        return "translate(" + f.x + "," + f.y + ")" + initialScale;
       })
       .attr("r", pointRadius);
 
