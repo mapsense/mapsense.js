@@ -2568,6 +2568,13 @@ ms.basemap = function() {
     return basemap;
   };
 
+  basemap.on("load", function(e) {
+    var g = e.tile.element;
+    var tileBackground = g.querySelector(".tile-background");
+    if (tileBackground && style)
+      tileBackground.classList.add("mapsense-" + style);
+  });
+
   basemap.style("light");
   return basemap;
 };
