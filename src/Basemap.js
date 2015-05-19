@@ -2,7 +2,7 @@ ms.basemap = function() {
   var basemap = ms.topoJson();
   var attribution = ms.attribution('<a target="_blank" href="https://developer.mapsense.co/tileViewer/?tileset=mapsense.earth">©Mapsense ©OpenStreetMap</a>');
 
-  var url = "https://{S}-api.mapsense.co/explore/api/universes/mapsense.earth/{Z}/{X}/{Y}.topojson?s=10&ringSpan=8";
+  var url = "https://{S}-api.mapsense.co/universes/mapsense.earth/{Z}/{X}/{Y}.topojson?s=10&ringSpan=8";
   var apiKey;
   var style;
 
