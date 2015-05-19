@@ -1,30 +1,15 @@
-ms.attribution = function(text) {
+ms.attribution = function(html) {
   var attribution = {},
       map,
-      container = ms.svg("g"),
-      textNode = ms.svg("text");
+      container = document.createElement("div");
 
-  container.setAttribute("class", "attribution");
-  container.appendChild(textNode);
+  container.setAttribute("class", "mapsense-attribution");
 
-  textNode.setAttribute("text-anchor", "end");
-  textNode.setAttribute("dx", -5);
-  textNode.setAttribute("dy", -5);
-  textNode.style.setProperty("user-select", "none");
-  textNode.style.setProperty("cursor", "default");
-
-  attribution.text = function(x) {
-    if (!arguments.length) return textNode.textContent;
-    textNode.textContent = x;
+  attribution.html = function(x) {
+    if (!arguments.length) return container.innerHTML;
+    container.innerHTML = x;
     return attribution;
   };
-
-  function resize() {
-    var map = attribution.map();
-    var mapSize = map.size();
-    textNode.setAttribute("x", mapSize.x);
-    textNode.setAttribute("y", mapSize.y);
-  }
 
   attribution.map = function(x) {
     if (!arguments.length) return map;
@@ -33,17 +18,14 @@ ms.attribution = function(text) {
         container.parentNode.appendChild(container);
         return attribution;
       }
-      map.off("resize", resize);
       container.parentNode.removeChild(container);
     }
     map = x;
     if (map) {
-      map.svgContainer().appendChild(container);
-      map.on("resize", resize);
-      resize();
+      map.relativeContainer().appendChild(container);
     }
     return attribution;
   };
 
-  return attribution.text(text);
+  return attribution.html(html);
 };

@@ -122,13 +122,24 @@ ms.map = function() {
   svgContainer.setAttribute("class", "mapsense-map");
   svgContainer.appendChild(rect);
 
+  var relativeContainer = document.createElement("div");
+  relativeContainer.style.setProperty("position", "relative");
+  relativeContainer.style.setProperty("width", "100%");
+  relativeContainer.style.setProperty("height", "100%");
+
+  relativeContainer.appendChild(svgContainer);
+
   map.container = function(x) {
     if (!arguments.length) return container;
     container = x;
-    container.appendChild(svgContainer);
+    container.appendChild(relativeContainer);
     if (interactionEnabled)
       map.add(interact);
     return map.resize(); // infer size
+  };
+
+  map.relativeContainer = function() {
+    return relativeContainer;
   };
 
   map.svgContainer = function() {
