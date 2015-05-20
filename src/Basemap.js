@@ -72,5 +72,6 @@ ms.basemap = function() {
 
   basemap.style("light");
   basemap.tileBackground(true);
+  basemap.clip(true);
   return basemap;
 };

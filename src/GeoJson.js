@@ -2,7 +2,7 @@ ms.geoJson = function(fetch) {
   var geoJson = ms.layer(load, unload),
       container = geoJson.container(),
       url,
-      clip = true,
+      clip = false,
       clipId = "org.polymaps." + ms.id(),
       clipHref = "url(#" + clipId + ")",
       clipPath = container.insertBefore(ms.svg("clipPath"), container.firstChild),
