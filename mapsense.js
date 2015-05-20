@@ -1227,7 +1227,7 @@ ms.geoJson = function(fetch) {
       clipHref = "url(#" + clipId + ")",
       clipPath = container.insertBefore(ms.svg("clipPath"), container.firstChild),
       clipRect = clipPath.appendChild(ms.svg("rect")),
-      scale = "auto",
+      scale = "fixed",
       zoom = null,
       pointRadius = 4.5,
       features,
