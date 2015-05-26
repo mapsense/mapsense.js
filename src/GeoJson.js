@@ -163,7 +163,7 @@ ms.geoJson = function(fetch) {
       initialScale = "scale(" + Math.pow(2, tile.zoom - (tile.scale = geoJson.map().zoom())) + ")";
     }
     else if (scale == "relative") {
-      if(! zoomWhenLoaded) zoomWhenLoaded = tile.zoom;
+      if (typeof zoomWhenLoaded == 'undefined') zoomWhenLoaded = tile.zoom;
       tile.scale = geoJson.map().zoom();
       initialScale = "scale(" + Math.pow(.5, zoomWhenLoaded - tile.zoom)  + ")";
     }
