@@ -12,7 +12,8 @@ ms.geoJson = function(fetch) {
       pointRadius = 4.5,
       features,
       tileBackground = false,
-      selection;
+      selection,
+      zoomWhenLoaded;
 
   container.setAttribute("fill-rule", "evenodd");
   clipPath.setAttribute("id", clipId);
@@ -159,7 +160,14 @@ ms.geoJson = function(fetch) {
 
     var initialScale = "";
     if (scale == "fixed") {
+      tile.scale = geoJson.map().zoom();
       initialScale = "scale(" + Math.pow(2, tile.zoom - (tile.scale = geoJson.map().zoom())) + ")";
+      // console.log("setting initialScale to " + initialScale);
+    }
+    else if (scale == "relative") {
+      if(! zoomWhenLoaded) zoomWhenLoaded = tile.zoom;
+      tile.scale = geoJson.map().zoom();
+      initialScale = "scale(" + Math.pow(.5, zoomWhenLoaded - tile.zoom)  + ")";
     }
 
     var pointUpdate = d3.select(g)
@@ -199,6 +207,7 @@ ms.geoJson = function(fetch) {
       for (key in tiles) {
         if ((tile = tiles[key]).scale != zoom) {
           k = "scale(" + Math.pow(2, tile.zoom - zoom) + ")";
+          console.log("tile.zoom = " + tile.zoom + ", zoom = " + zoom + ", scale = " + k);
           i = -1;
           n = (features = tile.features).length;
           while (++i < n) rescale((feature = features[i]).data, feature.element, k);
@@ -206,6 +215,18 @@ ms.geoJson = function(fetch) {
         }
       }
     }
+    // else if(scale == "relative") {
+    //   // console.log("moving");
+    //  for (key in tiles) {
+    //     if ((tile = tiles[key]).scale != zoom) {
+    //       k = "scale(" + Math.pow(2, tile.zoom - zoom) + ")";
+    //       i = -1;
+    //       n = (features = tile.features).length;
+    //       while (++i < n) rescale((feature = features[i]).data, feature.element, k);
+    //       tile.scale = zoom;
+    //     }
+    //   }
+    // }
   }
 
   geoJson.tileBackground = function(x) {
