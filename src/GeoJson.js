@@ -205,7 +205,6 @@ ms.geoJson = function(fetch) {
       for (key in tiles) {
         if ((tile = tiles[key]).scale != zoom) {
           k = "scale(" + Math.pow(2, tile.zoom - zoom) + ")";
-          console.log("tile.zoom = " + tile.zoom + ", zoom = " + zoom + ", scale = " + k);
           i = -1;
           n = (features = tile.features).length;
           while (++i < n) rescale((feature = features[i]).data, feature.element, k);
