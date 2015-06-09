@@ -82,7 +82,7 @@ ms.geoJson = function(fetch) {
       var updated = [];
 
       /* Fetch the next batch of features, if so directed. */
-      if (data.next) tile.request = fetch(data.next.href, update);
+      if (data.next) tile.request = doFetch(data.next.href, update, tile);
 
       if (geoJson.tile() && tileBackground) {
         var tileSize = geoJson.map().tileSize();
@@ -100,10 +100,15 @@ ms.geoJson = function(fetch) {
     }
 
     if (url != null) {
-      tile.request = fetch(typeof url == "function" ? url(tile) : url, update);
+      tile.request = doFetch(typeof url == "function" ? url(tile) : url, update, tile);
     } else {
       update({type: "FeatureCollection", features: features || []});
     }
+  }
+
+  function doFetch(url, update, tile) {
+    if (typeof fetch.setTile == "function") fetch.setTile(tile);
+    fetch(url, update);
   }
 
   function copyObject(source) {
