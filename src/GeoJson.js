@@ -12,7 +12,10 @@ ms.geoJson = function(fetch) {
       pointRadius = 4.5,
       features,
       tileBackground = false,
-      selection;
+      selection,
+      data,
+      enter,
+      exit = function(selection) { selection.remove(); };
 
   container.setAttribute("fill-rule", "evenodd");
   clipPath.setAttribute("id", clipId);
@@ -147,24 +150,38 @@ ms.geoJson = function(fetch) {
         pathFeatures.push(f);
     });
 
-    var pathUpdate = d3.select(g)
+    var pathUpdate,
+        pathEnter,
+        pathExit;
+
+    pathUpdate = d3.select(g)
       .selectAll("path")
-      .data(pathFeatures)
+      .data(data? data(pathFeatures) : pathFeatures);
+
+    pathEnter = pathUpdate
       .enter()
       .append("path")
-      .attr("d", function(f) { return path(f); });
+      .attr("d", path);
+
+    pathExit = pathUpdate.exit();
 
     if (updated)
       pathUpdate.each(function(f) { updated.push({ element: this, data: f }); });
+
+    var pointUpdate,
+        pointEnter,
+        pointExit;
 
     var initialScale = "";
     if (scale == "fixed") {
       initialScale = "scale(" + Math.pow(2, tile.zoom - (tile.scale = geoJson.map().zoom())) + ")";
     }
 
-    var pointUpdate = d3.select(g)
+    pointUpdate = d3.select(g)
       .selectAll("circle")
-      .data(pointFeatures)
+      .data(pointFeatures);
+
+    pointEnter = pointUpdate
       .enter()
       .append("circle")
       .attr("transform", function(f) {
@@ -172,8 +189,20 @@ ms.geoJson = function(fetch) {
       })
       .attr("r", pointRadius);
 
+    pointExit = pointUpdate.exit();
+
     if (updated)
       pointUpdate.each(function(f) { updated.push({ element: this, data: f }); });
+
+    if (enter) {
+      pathEnter.push.apply(pathEnter, pointEnter);
+      enter(pathEnter);
+    }
+
+    if (exit) {
+      pathExit.push.apply(pathExit, pointExit);
+      exit(pathExit);
+    }
 
     if (selection) {
       pathUpdate.push.apply(pathUpdate, pointUpdate);
@@ -214,10 +243,27 @@ ms.geoJson = function(fetch) {
     return geoJson;
   };
 
+  geoJson.data = function(x) {
+    if (!arguments.length) return data;
+    data = x;
+    // TODO: Invoke 'draw()'
+  };
+
+  /** AKA update */
   geoJson.selection = function(x) {
     if (!arguments.length) return selection;
     selection = x;
     return geoJson.reshow();
+  };
+
+  geoJson.enter = function(x) {
+    if (!arguments.length) return enter;
+    enter = x;
+  };
+
+  geoJson.exit = function(x) {
+    if (!arguments.length) return exit;
+    exit = x;
   };
 
   geoJson.url = function(x) {
