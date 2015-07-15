@@ -15,6 +15,7 @@ ms.geoJson = function(fetch) {
       selection,
       data,
       enter,
+      key,
       exit = function(selection) { selection.remove(); };
 
   container.setAttribute("fill-rule", "evenodd");
@@ -150,23 +151,22 @@ ms.geoJson = function(fetch) {
         pathFeatures.push(f);
     });
 
+    function bind(selection, features) {
+      selection.data(data? data(features) : features, key);
+    }
+
     var pathUpdate,
         pathEnter,
         pathExit;
 
     pathUpdate = d3.select(g)
       .selectAll("path")
-      .data(data? data(pathFeatures) : pathFeatures);
+      .call(bind, pathFeatures);
 
     pathEnter = pathUpdate
       .enter()
       .append("path")
       .attr("d", path);
-
-    pathExit = pathUpdate.exit();
-
-    if (updated)
-      pathUpdate.each(function(f) { updated.push({ element: this, data: f }); });
 
     var pointUpdate,
         pointEnter,
@@ -179,7 +179,7 @@ ms.geoJson = function(fetch) {
 
     pointUpdate = d3.select(g)
       .selectAll("circle")
-      .data(pointFeatures);
+      .call(bind, pointFeatures);
 
     pointEnter = pointUpdate
       .enter()
@@ -189,19 +189,22 @@ ms.geoJson = function(fetch) {
       })
       .attr("r", pointRadius);
 
-    pointExit = pointUpdate.exit();
-
-    if (updated)
-      pointUpdate.each(function(f) { updated.push({ element: this, data: f }); });
-
     if (enter) {
       pathEnter.push.apply(pathEnter, pointEnter);
       enter(pathEnter);
     }
 
     if (exit) {
+      var pathExit = pathUpdate.exit(),
+          pointExit = pointUpdate.exit();
+
       pathExit.push.apply(pathExit, pointExit);
       exit(pathExit);
+    }
+
+    if (updated) {
+      pathUpdate.each(function(f) { updated.push({ element: this, data: f }); });
+      pointUpdate.each(function(f) { updated.push({ element: this, data: f }); });
     }
 
     if (selection) {
@@ -247,6 +250,11 @@ ms.geoJson = function(fetch) {
     if (!arguments.length) return data;
     data = x;
     // TODO: Invoke 'draw()'
+  };
+
+  geoJson.key = function(x) {
+    if (!arguments.length) return key;
+    key = x;
   };
 
   /** AKA update */
