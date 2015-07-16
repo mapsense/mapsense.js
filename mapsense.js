@@ -588,7 +588,7 @@ ms.map = function(mapContainer) {
     if (!size) {
       rect.setAttribute("width", "100%");
       rect.setAttribute("height", "100%");
-      b = rect.getBBox();
+      var b = rect.getBBox();
       sizeActual = {x: b.width, y: b.height};
       resizer.add(map);
     } else {
