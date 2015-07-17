@@ -12,7 +12,14 @@ ms.geoJson = function(fetch) {
       pointRadius = 4.5,
       features,
       tileBackground = false,
-      selection;
+      data,
+      key = (function() {
+        var k = 0;
+        return function(f) { return (typeof f.id !== 'undefined'? f.id : k++); };
+      })(),
+      selection,
+      dataVersion = 0,
+      selectionVersion = 0;
 
   container.setAttribute("fill-rule", "evenodd");
   clipPath.setAttribute("id", clipId);
@@ -74,16 +81,14 @@ ms.geoJson = function(fetch) {
   function load(tile, proj) {
     var g = tile.element = ms.svg("g");
 
-    var tileProj = proj(tile);
-
-    tile.features = [];
+    tile.proj = proj(tile);
+    tile.fetched = []; // the output of the fetch function
+    tile.features = []; //  { feature, element }
+    tile.draw = function() {
+      draw(g, tile);
+    };
 
     function update(data) {
-      var updated = [];
-
-      /* Fetch the next batch of features, if so directed. */
-      if (data.next) tile.request = fetch(data.next.href, update);
-
       if (geoJson.tile() && tileBackground) {
         var tileSize = geoJson.map().tileSize();
         d3.select(g.insertBefore(ms.svg("rect"), g.firstChild))
@@ -92,11 +97,11 @@ ms.geoJson = function(fetch) {
           .attr("class", "tile-background");
       }
 
-      draw(g, data, tileProj, updated, tile);
+      Array.prototype.push.apply(tile.fetched, data.features);
+      tile.draw();
 
       tile.ready = true;
-      updated.push.apply(tile.features, updated);
-      geoJson.dispatch({type: "load", tile: tile, features: updated});
+      geoJson.dispatch({type: "load", tile: tile, features: tile.features});
     }
 
     if (url != null) {
@@ -130,15 +135,15 @@ ms.geoJson = function(fetch) {
     return points;
   }
 
-  function draw(g, data, tileProj, updated, tile) {
-    var proj = projection(tileProj.locationPoint);
+  function draw(g, tile) {
+    var proj = projection(tile.proj.locationPoint),
+        path = projectSpherical(tile.proj),
+        pathFeatures = [],
+        pointFeatures = [],
+        features = data? data(tile.fetched, tile) : tile.fetched,
+        updated = [];
 
-    var path = projectSpherical(tileProj);
-
-    var pathFeatures = [],
-        pointFeatures = [];
-
-    data.features.forEach(function(f) {
+    features.forEach(function(f) {
       if (f.geometry.type === "Point")
         pointFeatures.push(projectPoint(f, proj));
       else if (f.geometry.type === "MultiPoint")
@@ -149,13 +154,15 @@ ms.geoJson = function(fetch) {
 
     var pathUpdate = d3.select(g)
       .selectAll("path")
-      .data(pathFeatures)
+      .data(pathFeatures, key);
+
+    pathUpdate
       .enter()
       .append("path")
       .attr("d", function(f) { return path(f); });
 
-    if (updated)
-      pathUpdate.each(function(f) { updated.push({ element: this, data: f }); });
+    pathUpdate.exit().remove();
+    pathUpdate.each(function(f) { updated.push({ element: this, data: f }); });
 
     var initialScale = "";
     if (scale == "fixed") {
@@ -164,7 +171,9 @@ ms.geoJson = function(fetch) {
 
     var pointUpdate = d3.select(g)
       .selectAll("circle")
-      .data(pointFeatures)
+      .data(pointFeatures, key);
+
+    pointUpdate
       .enter()
       .append("circle")
       .attr("transform", function(f) {
@@ -172,13 +181,17 @@ ms.geoJson = function(fetch) {
       })
       .attr("r", pointRadius);
 
-    if (updated)
-      pointUpdate.each(function(f) { updated.push({ element: this, data: f }); });
+    pointUpdate.exit().remove();
+    pointUpdate.each(function(f) { updated.push({ element: this, data: f }); });
 
     if (selection) {
       pathUpdate.push.apply(pathUpdate, pointUpdate);
       selection(pathUpdate);
     }
+    
+    tile.features = updated;
+    tile.dataVersion = dataVersion;
+    tile.selectionVersion = selectionVersion;
   }
 
   function unload(tile) {
@@ -217,6 +230,14 @@ ms.geoJson = function(fetch) {
   geoJson.selection = function(x) {
     if (!arguments.length) return selection;
     selection = x;
+    selectionVersion++;
+    return geoJson.reshow();
+  };
+
+  geoJson.data = function(x) {
+    if (!arguments.length) return data;
+    data = x;
+    dataVersion++;
     return geoJson.reshow();
   };
 
@@ -276,10 +297,13 @@ ms.geoJson = function(fetch) {
   geoJson.show = function(tile) {
     if (clip) tile.element.setAttribute("clip-path", clipHref);
     else tile.element.removeAttribute("clip-path");
-    if (selection) {
+    if (data && tile.dataVersion != dataVersion) {
+      tile.draw();
+    } else if (selection && tile.selectionVersion != selectionVersion) {
       var s = d3.select(tile.element).selectAll("path");
       s.push.apply(s, d3.select(tile.element).selectAll("circle"));
       selection(s);
+      tile.selectionVersion = selectionVersion;
     }
     geoJson.dispatch({type: "show", tile: tile, features: tile.features});
     return geoJson;
