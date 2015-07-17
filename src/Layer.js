@@ -248,6 +248,8 @@ ms.layer = function(load, unload) {
     // flush the cache, clearing no-longer-needed tiles
     cache.flush();
 
+    checkIsLoading();
+
     // dispatch the move event
     layer.dispatch({type: "move"});
   }
@@ -264,6 +266,17 @@ ms.layer = function(load, unload) {
       delete e.tile.proxyRefs;
     }
   }
+
+  var checkIsLoading = (function() {
+    var wasLoading;
+    return function() {
+      var isLoading = layer.isLoading();
+      if (isLoading !== wasLoading) {
+        wasLoading = isLoading;
+        layer.dispatch({type: "loading", loading: isLoading});
+      }
+    };
+  })();
 
   layer.map = function(x) {
     if (!arguments.length) return map;
@@ -308,6 +321,16 @@ ms.layer = function(load, unload) {
     return layer;
   };
 
+  layer.isLoading = function() {
+    var tiles = cache.locks();
+    for (key in tiles) {
+      var tile = tiles[key];
+      if (!tile.ready)
+        return true;
+    }
+    return false;
+  };
+
   layer.transform = function(x) {
     if (!arguments.length) return transform;
     transform = x;
@@ -336,7 +359,7 @@ ms.layer = function(load, unload) {
   };
 
   layer.dispatch = ms.dispatch(layer);
-  layer.on("load", cleanup);
+  layer.on("load", cleanup).on("load", checkIsLoading);
 
   return layer;
 };
