@@ -303,7 +303,7 @@ ms.geoJson = function(fetch) {
       var s = d3.select(tile.element).selectAll("path");
       s.push.apply(s, d3.select(tile.element).selectAll("circle"));
       selection(s);
-      tile.electionVersion = selectionVersion;
+      tile.selectionVersion = selectionVersion;
     }
     geoJson.dispatch({type: "show", tile: tile, features: tile.features});
     return geoJson;
