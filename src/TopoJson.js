@@ -52,13 +52,13 @@ ms.topoJson = function(fetch) {
     return features;
   };
 
-  var topoToGeo = function(url, callback) {
+  var topoToGeo = function(url, callback, options) {
     return fetch(url, function(topology) {
       callback({
         type: "FeatureCollection",
         features: topologyFeatures(topology)
       });
-    });
+    }, options);
   };
 
   var topoJson = ms.geoJson(topoToGeo);
