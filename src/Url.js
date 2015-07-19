@@ -11,7 +11,7 @@ ms.url = function(template) {
     } else if ((column < 0) || (column >= max)) {
       return null;
     }
-    return template.replace(/{(.)}/g, function(s, v) {
+    return (isFunction(template)? template(c) : template).replace(/{(.)}/g, function(s, v) {
       switch (v) {
         case "S": return hosts[(Math.abs(c.zoom) + c.row + column) % hosts.length];
         case "Z": return c.zoom;
@@ -29,6 +29,10 @@ ms.url = function(template) {
       }
       return v;
     });
+  }
+
+  function isFunction(obj) {
+    return toString.call(obj) === '[object Function]'
   }
 
   format.template = function(x) {
