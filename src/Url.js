@@ -32,7 +32,7 @@ ms.url = function(template) {
   }
 
   function isFunction(obj) {
-    return toString.call(obj) === '[object Function]'
+    return toString.call(obj) === '[object Function]';
   }
 
   format.template = function(x) {
