@@ -75,6 +75,7 @@ ms.geoJson = function(fetch) {
     var g = tile.element = ms.svg("g");
 
     var tileProj = proj(tile);
+    var context = {zoom: tile.zoom, row: tile.row, column: tile.column};
 
     tile.features = [];
 
@@ -82,7 +83,7 @@ ms.geoJson = function(fetch) {
       var updated = [];
 
       /* Fetch the next batch of features, if so directed. */
-      if (data.next) tile.request = fetch(data.next.href, update);
+      if (data.next) tile.request = fetch(data.next.href, update, {context: context});
 
       if (geoJson.tile() && tileBackground) {
         var tileSize = geoJson.map().tileSize();
@@ -100,7 +101,7 @@ ms.geoJson = function(fetch) {
     }
 
     if (url != null) {
-      tile.request = fetch(typeof url == "function" ? url(tile) : url, update);
+      tile.request = fetch(typeof url == "function" ? url(tile) : url, update, {context: context});
     } else {
       update({type: "FeatureCollection", features: features || []});
     }
