@@ -12,7 +12,8 @@ ms.geoJson = function(fetch) {
       pointRadius = 4.5,
       features,
       tileBackground = false,
-      selection;
+      selection,
+      zoomWhenLoaded;
 
   container.setAttribute("fill-rule", "evenodd");
   clipPath.setAttribute("id", clipId);
@@ -160,6 +161,11 @@ ms.geoJson = function(fetch) {
     var initialScale = "";
     if (scale == "fixed") {
       initialScale = "scale(" + Math.pow(2, tile.zoom - (tile.scale = geoJson.map().zoom())) + ")";
+    }
+    else if (scale == "relative") {
+      if (typeof zoomWhenLoaded == 'undefined') zoomWhenLoaded = tile.zoom;
+      tile.scale = geoJson.map().zoom();
+      initialScale = "scale(" + Math.pow(.5, zoomWhenLoaded - tile.zoom)  + ")";
     }
 
     var pointUpdate = d3.select(g)
