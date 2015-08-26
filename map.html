@@ -44,14 +44,12 @@
     <div class="container">
       <div class="row">
         <aside class="col-md-2 col-sm-2">
-          
-<h3>Mapsense.js</h3>
+          <h3><a href="./">Mapsense.js</a></h3>
 	<ul>
 		<li>
 			<h4>Core</h4>
 			<ul class="list-unstyled">
 			<li><a href="map.html">map</a></li>
-			<li><a href="basemap.html">basemap</a></li>
 			<li><a href="layer.html">layer</a></li>
 			<li><a href="image.html">image</a></li>
 			<li><a href="geoJson.html">geoJson</a></li>
@@ -84,16 +82,6 @@
 			</ul>
 		</li>
 	</ul>
-
-<h3 > <a href='/tileViewer'>Mapsense Data </a> </h3>
-<ul>
-	<ul class= "list-unstyled">
-	<li><a href="tileRequests.html">Tile Paths</a></li>
-	<li><a href="tileQueries.html">Tile Queries</a></li>
-	<li><a href="featureProperties.html"> Feature Properties</a></li>
-	<li><a href="contextAPI.html">Context API</a></li>
-</ul>
-</ul>
 
         </aside>
         <div class="col-md-10 col-sm-10 main-content">
@@ -444,19 +432,12 @@
             <i>map</i>.<b>mouse</b>(<i>e</i>)
           </dt>
           <dd>
-            <p>Returns the position of the mouse, as determined from the given
-            mouse event <i>e</i>, in the map&rsquo;s coordinate space. The
-            returned position is an object with <tt>x</tt> and <tt>y</tt> number
-            attributes. Typically, this method returns the <tt>pageX</tt>
-            and <tt>pageY</tt> attributes of the event <i>e</i>, minus the
-            top-left position of the map container; however, this method takes
-            into consideration any <a href="http://www.w3.org/TR/SVG/coords.html"
-            >custom transforms</a> that have been applied to the map container
-            through SVG.</p>
+            <p>Returns the position of the mouse, as determined from the given mouse event <i>e</i>, in the map&rsquo;s coordinate space.
+            The returned position is an object with <tt>x</tt> and <tt>y</tt> number attributes.
+            Typically, this method returns the <tt>pageX</tt> and <tt>pageY</tt> attributes of the event <i>e</i>, minus the top-left position of the map container;
+            however, this method takes into consideration any <a href="http://www.w3.org/TR/SVG/coords.html" target="_blank">custom transforms</a> that have been applied to the map container through SVG.</p>
 
-            <p>This method is based on the W3C specification for <a
-            href="http://www.w3.org/TR/SVG/types.html#__svg__SVGLocatable__getScreenCTM"
-            >getScreenCTM</a>.</p>
+            <p>This method is based on the W3C specification for <a href="http://www.w3.org/TR/SVG/types.html#__svg__SVGLocatable__getScreenCTM" target="_blank">getScreenCTM</a>.</p>
           </dd>
         </dl>
 
@@ -465,10 +446,8 @@
             <i>map</i>.<b>focusableParent</b>()
           </dt>
           <dd>
-            Returns the focusable parent element containing the map. Typically
-            this method returns the containing window; however, if the map is
-            contained inside of an element with a <a href="http://www.w3.org/TR/html401/interact/forms.html#adef-tabindex"
-            >tabindex</a> attribute, that element is returned instead.
+            Returns the focusable parent element containing the map.
+            Typically this method returns the containing window; however, if the map is contained inside of an element with a <a href="http://www.w3.org/TR/html401/interact/forms.html#adef-tabindex" target="_blank">tabindex</a> attribute, that element is returned instead.
           </dd>
         </dl>
 
@@ -479,13 +458,10 @@
             <i>map</i>.<b>locationPoint</b>(<i>l</i>)
           </dt>
           <dd>
-            Returns the pixel position of the given location <i>l</i>. The
-            returned point is an object with <tt>x</tt> and <tt>y</tt> number
-            attributes, denoting the position relative to the top-left corner of
-            the map container. The position is in the map container&rsquo;s
-            <a href="http://www.w3.org/TR/SVG/coords.html#EstablishingANewUserSpace"
-            >coordinate space</a>, compatible with <a href="#mouse"><tt><i>map</i
-            >.mouse</tt></a>.
+            Returns the pixel position of the given location <i>l</i>.
+            The returned point is an object with <tt>x</tt> and <tt>y</tt> number attributes, denoting the position relative to the top-left corner of the map container.
+            The position is in the map container's
+            <a href="http://www.w3.org/TR/SVG/coords.html#EstablishingANewUserSpace" tagret="_blank">coordinate space</a>, compatible with <a href="#mouse"><tt><i>map</i>.mouse</tt></a>.
           </dd>
         </dl>
 
@@ -498,7 +474,7 @@
             returned location is an object with <tt>lat</tt> and <tt>lon</tt>
             number attributes, and the given position <i>p</i> is relative to
             the top-left corner of the map container. The position is in the map
-            container&rsquo;s coordinate space, compatible with <a href="#mouse"
+            container's coordinate space, compatible with <a href="#mouse"
             ><tt><i>map</i>.mouse</tt></a>.
           </dd>
         </dl>
@@ -510,7 +486,7 @@
           <dd>
             Returns the tile coordinate for the specified location <i>l</i>.
             Unlike the static version of this method, the tile
-            coordinate&rsquo;s zoom level will match the map&rsquo;s rounded
+            coordinate's zoom level will match the map&rsquo;s rounded
             zoom level, <tt>Math.round(<i>map</i>.zoom())</tt>. The coordinate
             is represented as an object with <tt>zoom</tt>, <tt>column</tt>
             and <tt>row</tt> number attributes. The row and column values are
