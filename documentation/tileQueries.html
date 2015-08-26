@@ -1,0 +1,301 @@
+<!doctype html>
+<html>
+  <head>
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/png">
+<link rel="apple-touch-icon" href="/images/mapsense-icon-60.png" sizes="60x60">
+<link rel="apple-touch-icon" href="/images/mapsense-icon-76.png" sizes="76x76">
+<link rel="apple-touch-icon" href="/images/mapsense-icon-120.png" sizes="120x120">
+<link rel="apple-touch-icon" href="/images/mapsense-icon-152.png" sizes="152x152">
+
+  <link href='//fonts.googleapis.com/css?family=Quattrocento+Sans:400,700' rel='stylesheet' type='text/css'>
+  <script src="//google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+  <link href="/stylesheets/stickyFooter.css" rel="stylesheet" type="text/css" />
+  <style>
+    tbody{
+      background-color: white;
+    }
+    thead{
+      background-color: #EEE;
+    }
+    .container{
+      margin-bottom: 150px;
+    }
+    footer.footer div.container{
+      margin-bottom: 0;
+    }
+    pre.prettyprint {
+      padding:15px 15px !important;
+    }
+    div.main-content { background-color: #ffffff; }
+  </style>
+    <meta charset="utf-8">
+    
+    <!-- Always force latest IE rendering engine or request Chrome Frame -->
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    
+    <title>Mapsense Developer</title>
+    
+    <link href="/stylesheets/normalize.css" rel="stylesheet" type="text/css" /><link href="/stylesheets/all.css" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/all.js" type="text/javascript"></script>
+  </head>
+  
+  <body>
+    <div class="container">
+      <div class="row">
+        <aside class="col-md-2 col-sm-2">
+          
+<h3 > <a href='/documentation/'>  Mapsense.js </a> </h3>
+	<ul>
+		<li>
+			<h4>Core</h4>
+			<ul class="list-unstyled">
+			<li><a href="map.html">map</a></li>
+			<li><a href="basemap.html">basemap</a></li>
+			<li><a href="layer.html">layer</a></li>
+			<li><a href="image.html">image</a></li>
+			<li><a href="geoJson.html">geoJson</a></li>
+			<li><a href="topoJson.html">topoJson</a></li>
+			</ul>
+		</li>
+		<li>
+			<h4>Controls</h4>
+			<ul class="list-unstyled">
+			<li><a href="arrow.html">arrow</a></li>
+			<li><a href="compass.html">compass</a></li>
+			<li><a href="dblclick.html">dblclick</a></li>
+			<li><a href="drag.html">drag</a></li>
+			<li><a href="grid.html">grid</a></li>
+			<li><a href="hash.html">hash</a></li>
+			<li><a href="interact.html">interact</a></li>
+			<li><a href="wheel.html">wheel</a></li>
+			</ul>
+		</li>
+		<li>
+			<h4>Et cetera</h4>
+			<ul class="list-unstyled">
+			<li><a href="attribution.html">attribution</a></li>
+			<li><a href="cache.html">cache</a></li>
+			<li><a href="dispatch.html">dispatch</a></li>
+			<li><a href="queue.html">queue</a></li>
+			<li><a href="svg.html">svg</a></li>
+			<li><a href="transform.html">transform</a></li>
+			<li><a href="url.html">url</a></li>
+			</ul>
+		</li>
+	</ul>
+
+<h3 > <a href='/tileViewer'>Mapsense Data </a> </h3>
+<ul>
+	<ul class= "list-unstyled">
+	<li><a href="tileRequests.html">Tile Paths</a></li>
+	<li><a href="tileQueries.html">Tile Queries</a></li>
+	<li><a href="featureProperties.html"> Feature Properties</a></li>
+	<li><a href="contextAPI.html">Context API</a></li>
+</ul>
+</ul>
+
+        </aside>
+        <div class="col-md-10 col-sm-10 main-content">
+          <div class="span-18 prepend-6 last">
+
+   <h2 id="tiles">Tile Queries</h2>
+
+   <hr class="space"/>
+   <p>Mapsense tiles are dynamic: using a SQL-like syntax, you can control exactly which features and properties are retrieved. </p>
+   
+   <p>Once you&rsquo;ve generated a <a href="tileRequests.html">tile path</a>, you can start customizing tiles with query parameters. Tiles are generated dynamically in response to query parameters appended to the request. This section describes the composition of these queries. </p>
+   <p>Tile queries are appended to the tile path:</p>
+   <pre class="prettyprint lang-html">https://{S}-api.mapsense.co/universes/<b>{DATASET}</b>/{Z}/{X}/{Y}.topojson?api-key={KEY}&{QUERY}</pre>
+   <br>
+   <h4 id="optional-query-parameters">Query Parameters</h4>
+   <table class='table-bordered table'>
+      <thead>
+         <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Default</th>
+            <th>Description</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr>
+            <td>select</td>
+            <td>string</td>
+            <td>&mdash;</td>
+            <td>A comma separated list of meta-data fields to return on each feature eg. <code class="prettyprint">select=layer, sub_layer, name</code>. </td>
+         </tr>
+         <tr>
+            <td>where</td>
+            <td>string</td>
+            <td>&mdash;</td>
+            <td>A boolean expression to filter the result set, eg. <code class="prettyprint">where=sub_layer==&#39;motorways&#39;</code>. Only features that satisfy the boolean expression will be returned.</td>
+         </tr>
+         <tr>
+            <td><a href="#groups">group</a></td>
+            <td>string</td>
+            <td>&mdash;</td>
+            <td>An expression creating a logical group of geometries (see below)</td>
+         </tr>
+         <tr>
+            <td><a href="#actions">action</a></td>
+            <td>string</td>
+            <td>&mdash;</td>
+            <td>An expression assigning an action onto a group (see below)</td>
+         </tr>
+         <tr>
+            <td>srid</td>
+            <td>int</td>
+            <td>4326</td>
+            <td>The <a href="http://en.wikipedia.org/wiki/SRID">srid</a> (projection) for the data. Currently either 900913 (Spherical Mercator) or 4326 (lat/lon)</td>
+         </tr>
+      </tbody>
+   </table>
+     <h4> Examples: </h4>
+     <p>A query for the 0/0/0 OSM tile, but restricted to only retreiving countries boundaries and their names: </p>
+     <pre class="prettyprint lang-html ">https://api.mapsense.co/universes/mapsense.earth/0/0/0.topojson?api-key=key-fb3a8e7a8537477cbe1fb268d7b98c77
+<b>&select=name&amp;where=layer=='countries'</b> </pre>
+
+     <p>To return name and population fields for counties and zips: </p>
+     <pre class="prettyprint lang-html "><b>&select=name,population&where=admin=='county' || admin=='zipcode'</b></pre>
+
+     <p>To return only states that have a population more than 10 million: </p>
+     <pre class="prettyprint lang-html "><b>&where=admin=='state' AND population>10000000 </b></pre>
+
+    <br>
+   <h3> Advanced Queries </h3>
+
+   <p>You can control what data get returned by creating <a href="#groups"><b>groups</b></a> and then applying <a href="#actions"><b>actions</b></a> to them.</p>
+
+
+   <h3 id="groups"> Groups </h3>
+      <p>To perform advanced action on tiles, first you must form a <strong>group</strong>. A <strong>group</strong> is any logical collection of <strong>features</strong>, assigned to a group via evaluation of a javascript-like expression. The syntax is <code class="prettyprint"> group.NAME=GROUPING-EXPRESSION</code> where a the grouping expression logically divides the geometries. </p> 
+
+      <p>For example, this expression creates a <strong>group</strong> called foo, where foo is all roads where <strong>sub_layer</strong> equals ‘motorways’:   </p>
+            
+      <pre class="prettyprint lang-html ">group.motorways=sub_layer=='motorways' </pre>
+
+     <p>Additional criteria may be added via the use of 'or' (<code class="prettyprint">||</code>) or 'and' (<code class="prettyprint">&&</code> or <code class="prettyprint">AND</code>). For instance, to create a group of both buildings and parks:</p>
+      <pre class="prettyprint lang-html ">group.bar=sub_layer=='landuse_building'||sub_layer=='landuse_park' </pre>
+
+      <p>To only select roads which have a priority greater than 3:</p>
+      <pre class="prettyprint lang-html ">group.foobar=layer=='roads' AND priority>3</pre>
+
+
+     <p>Groups are often boolean expresions, but don't have to be. For example, <code class="prettyprint">group.admins=admin_level</code> exposes <code class="prettyprint">group.admins.2</code> and <code class="prettyprint">group.admins.4</code> etc. Once a group has been created, <a href="#actions">actions</a> can be performed on it. </p>
+
+
+
+
+
+    <h3 id="actions">Actions</h3>
+
+   <p>The actions syntax is: <code class="prettyprint">group.NAME.GROUPING=ACTION(argument)</code>. For boolean groupings, you get two groups: the group you created, and it's complement. For example: <code class="prettyprint">group.foo.true=dz(-2)</code> and <code class="prettyprint">group.foo.false=remove()</code> are both valid. </p>
+
+   <h4 id="spatial-actions">Spatial Actions</h4>
+   <p>The argument passed to spatial actions represent the threshold for display of the given feature. Larger numbers raise the threshold and display less information. The scale is logarithmic, so each unit increase will double the related value. For example, passing ringSpan(3) will increase the ring display threshold by a factor of 8. </p>
+
+
+   <table class="table-bordered table">
+      <thead>
+         <tr>
+            <th>Action</th>
+            <th>Definition</th>
+            <th>Range</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr>
+            <td>s(number)</td>
+            <td>This action modifies the amount of simplificaiton to apply to lines. This action can only be applied globally.</td>
+            <td>0 - 20</td>
+         </tr>
+         <tr>
+            <td>ringSpan(number)</td>
+            <td>A ring is a line that begins and ends in the same place (an enclosed area). ringSpan controls the minimum size threshold for which a ring will be displayed.</td>
+            <td>0 - 20</td>
+         </tr>
+         <tr>
+            <td>lineSpan(number)</td>
+            <td>lineSpan controls the minimum length threshold for which a line will be displayed.</td>
+            <td>0 - 20</td>
+         </tr>
+      </tbody>
+   </table>
+
+
+   <h4 id="property-based-actions">Property-based Actions</h4>
+   <table class="table-bordered table">
+      <thead>
+         <tr>
+            <th>Action</th>
+            <th>Definition</th>
+            <th>Range</th>
+         </tr>
+      </thead>
+      <tbody>
+         <tr>
+            <td>dz(number)</td>
+            <td>Stands for delta zoom. This changes the default zoom at which a feature will enter the map. For example, by default local roads might enter the map at zoom 12, while major roads might enter much earlier, at zoom 6. Applying a delta zoom allows you to increase the minimum zoom at which features will enter.</td>
+            <td>(1 - 18)</td>
+         </tr>
+         <tr>
+            <td>remove()</td>
+            <td>Removes the group</td>
+            <td>&mdash;</td>
+         </tr>
+         <tr>
+            <td>select(field1, field2, &hellip;)</td>
+            <td>Select the given fields for the geometries in the group</td>
+            <td>&mdash;</td>
+         </tr>
+      </tbody>
+   </table>
+
+   <p>Examples:</p>
+  
+      <p>Remove the Golden Gate Bridge: </p>
+      <pre class="prettyprint lang-html ">group.bridge=name=='Golden Gate Bridge'&group.bridge.true=remove()</pre>
+
+      <p>Only display buildings: </p>
+      <pre class="prettyprint lang-html ">group.buildings=sub_layer=='landuse_building13'&group.buildings.false=remove()</pre>
+
+      <p>Bring in US states early: </p>
+      <pre class="prettyprint lang-html ">group.states=admin_level==2 AND country=='United States'&group.states=dz(-2)</pre> 
+
+      <p>Select state names and zipcode populations: </p>
+      <pre class="prettyprint lang-html ">group.admin=admin&group.admin.states=select(name)&group.admin.zipcodes=select(population)</pre>
+      <br> 
+  <h2> Other </h2>
+
+      <p>Groups can be nested indefinitely. For example, <pre class="prettyprint lang-html">group.foo=sub_layer==&#39;landuse_natural13&#39;&amp;group.foo.true.woods=landuse==“forest&quot;</pre> creates multiple nested groups. Performing an action on group.foo.true.woods.true would only affect those features whose sub_layer is “landuse_natural13” and that are forests, while operating on group.foo.true would affect all “landuse_natural13” features. Likewise, one can operate on group.foo.false or group.foo.true.woods.false.</p>
+
+      <p>Actions can be performed globally instead of being limited to single group. In this case, the syntax is <pre class="prettyprint lang-html">ACTION=ARGUMENT</pre>. </p>
+      <p> For example set the global simplification factor:  
+      <pre class="prettyprint lang-html ">https://api.mapsense.co/universes/mapsense.earth/0/0/0.topojson?api-key=key-fb3a8e7a8537477cbe1fb268d7b98c77&s=11</pre>
+
+
+</div>
+
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+  <div class="container text-center">
+    <div>Designed, built, and maintained with love by the team at Mapsense</div>
+    <div>
+      <a href="https://github.com/mapsense/mapsense.js" target="_blank">GitHub</a> -
+      <a href="http://www.mapsense.co/gallery/" target="_blank">Gallery</a> -
+      <a href="http://www.mapsense.co/blog/" target="_blank">Blog</a> -
+      <a href="https://twitter.com/Mapsense/" target="_blank">Twitter</a> -
+      <a href="https://github.com/mapsense/mapsense.js/issues" target="_blank">Issues</a> -
+      <a href="http://www.mapsense.co/tos/" target="_blank">Terms</a> -
+      <a href="http://www.mapsense.co/contact/" target="_blank">About</a> -
+      <a href="mailto:support@mapsense.co" target="_blank">Contact Us</a>:
+      <a href="mailto:support@mapsense.co" target="_blank">support@mapsense.co</a>
+    </div>
+    <div class="copyright">&copy; 2015 Mapsense Inc.</div>
+  </div>
+</footer>
+
+  </body>
+</html>

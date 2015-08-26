@@ -1,0 +1,310 @@
+<!doctype html>
+<html>
+  <head>
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/png">
+<link rel="apple-touch-icon" href="/images/mapsense-icon-60.png" sizes="60x60">
+<link rel="apple-touch-icon" href="/images/mapsense-icon-76.png" sizes="76x76">
+<link rel="apple-touch-icon" href="/images/mapsense-icon-120.png" sizes="120x120">
+<link rel="apple-touch-icon" href="/images/mapsense-icon-152.png" sizes="152x152">
+
+  <link href='//fonts.googleapis.com/css?family=Quattrocento+Sans:400,700' rel='stylesheet' type='text/css'>
+  <script src="//google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+  <link href="/stylesheets/stickyFooter.css" rel="stylesheet" type="text/css" />
+  <style>
+    tbody{
+      background-color: white;
+    }
+    thead{
+      background-color: #EEE;
+    }
+    .container{
+      margin-bottom: 150px;
+    }
+    footer.footer div.container{
+      margin-bottom: 0;
+    }
+    pre.prettyprint {
+      padding:15px 15px !important;
+    }
+    div.main-content { background-color: #ffffff; }
+  </style>
+    <meta charset="utf-8">
+    
+    <!-- Always force latest IE rendering engine or request Chrome Frame -->
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    
+    <title>Mapsense Developer</title>
+    
+    <link href="/stylesheets/normalize.css" rel="stylesheet" type="text/css" /><link href="/stylesheets/all.css" rel="stylesheet" type="text/css" />
+    <script src="/javascripts/all.js" type="text/javascript"></script>
+  </head>
+  
+  <body>
+    <div class="container">
+      <div class="row">
+        <aside class="col-md-2 col-sm-2">
+          
+<h3 > <a href='/documentation/'>  Mapsense.js </a> </h3>
+	<ul>
+		<li>
+			<h4>Core</h4>
+			<ul class="list-unstyled">
+			<li><a href="map.html">map</a></li>
+			<li><a href="basemap.html">basemap</a></li>
+			<li><a href="layer.html">layer</a></li>
+			<li><a href="image.html">image</a></li>
+			<li><a href="geoJson.html">geoJson</a></li>
+			<li><a href="topoJson.html">topoJson</a></li>
+			</ul>
+		</li>
+		<li>
+			<h4>Controls</h4>
+			<ul class="list-unstyled">
+			<li><a href="arrow.html">arrow</a></li>
+			<li><a href="compass.html">compass</a></li>
+			<li><a href="dblclick.html">dblclick</a></li>
+			<li><a href="drag.html">drag</a></li>
+			<li><a href="grid.html">grid</a></li>
+			<li><a href="hash.html">hash</a></li>
+			<li><a href="interact.html">interact</a></li>
+			<li><a href="wheel.html">wheel</a></li>
+			</ul>
+		</li>
+		<li>
+			<h4>Et cetera</h4>
+			<ul class="list-unstyled">
+			<li><a href="attribution.html">attribution</a></li>
+			<li><a href="cache.html">cache</a></li>
+			<li><a href="dispatch.html">dispatch</a></li>
+			<li><a href="queue.html">queue</a></li>
+			<li><a href="svg.html">svg</a></li>
+			<li><a href="transform.html">transform</a></li>
+			<li><a href="url.html">url</a></li>
+			</ul>
+		</li>
+	</ul>
+
+<h3 > <a href='/tileViewer'>Mapsense Data </a> </h3>
+<ul>
+	<ul class= "list-unstyled">
+	<li><a href="tileRequests.html">Tile Paths</a></li>
+	<li><a href="tileQueries.html">Tile Queries</a></li>
+	<li><a href="featureProperties.html"> Feature Properties</a></li>
+	<li><a href="contextAPI.html">Context API</a></li>
+</ul>
+</ul>
+
+        </aside>
+        <div class="col-md-10 col-sm-10 main-content">
+                <div class="span-18 prepend-6 last">
+        <h2>geoJson</h2>
+
+        <blockquote>A layer that contains <a href="http://geojson.org/">GeoJSON</a> features.  Extends
+          <a href="layer.html">layer</a>,
+          <a href="dispatch.html">dispatch</a>.
+        </blockquote>
+
+        <div class="span-4">
+        <a href="#mapsense.geoJson">geoJson</a><br>
+        <a href="#url">url</a><br>
+        <a href="#features">features</a><br>
+        <a href="#clip">clip</a><br>
+        <a href="#selection">selection</a><br>
+        <a href="#tileBackground">tileBackground</a><br>
+        <a href="#scale">scale</a><br>
+        </div>
+
+        <div class="span-4">
+        <a href="#reshow">reshow</a><br>
+        </div>
+
+        <hr class="space"/>
+
+        <dl class="function" id="mapsense.geoJson">
+          <dt>
+            <i>mapsense</i>.<b>geoJson</b>([<i>f</i>])
+          </dt>
+          <dd>
+            <p>Constructs a new GeoJSON layer with default settings.</p>
+
+            <p>An optional fetch function <i>f</i> may be specified, which
+            defaults to <a href="queue.html#mapsense.queue.json"><tt><i>mapsense</i
+            >.queue.json</tt></a>. The fetch function takes two arguments:
+            the URL to fetch as a string, and a callback function. The fetch
+            function must return a request object with an <a
+            href="queue.html#request.abort"><tt>abort</tt></a> method. The
+            callback function should be invoked with the GeoJSON data when
+            available.</p>
+
+            <p>The fetch function may be substituted to support GeoJSON
+            transcoding. For example, a KML layer might be implemented by
+            loading XML, and then converting it into a simplified GeoJSON
+            representation.</p>
+          </dd>
+        </dl>
+
+        <dl class="function" id="url">
+          <dt>
+            <i>geoJson</i>.<b>url</b>([<i>x</i>])
+          </dt>
+          <dd>
+            <p>Sets or gets the URL template associated with this GeoJSON layer.
+            If the argument <i>x</i> is specified, this method sets the URL
+            template and returns <tt>this</tt>. If no arguments are specified,
+            this method returns the current URL template. The default URL
+            template is &ldquo;about:blank&rdquo;.</p>
+
+            <p>The URL template may be specified either as a string or as a
+            function:</p>
+
+            <p>If a string, and the string contains placeholders of the form
+            &ldquo;{<em>A</em>}&rdquo;, where <em>A</em> is any character, then
+            the string is converted into a URL template function using <a
+            href="url.html"><tt><i>mapsense</i>.url</tt></a>. If the string does not
+            contain placeholders, then it is left as a string, and <a
+            href="layer.html#tile">tiling</a> and <a href="#clip">clipping</a>
+            are disabled.</p>
+
+            <p>If a function, then the given function is invoked, passing in the
+            tile coordinate of the GeoJSON file to load. The tile coordinate is
+            represented as an object with <tt>row</tt>, <tt>column</tt> and
+            <tt>zoom</tt> attributes. The function must return a string
+            representing the URL to load. See <a href="url.html"><tt><i>mapsense</i
+            >.url</tt></a> for an example implementation.</p>
+
+            <p>Note that if the GeoJSON file is not on the same domain, the
+            server must specify a suitable <a href="http://www.w3.org/TR/cors/"
+            >Access-Control-Allow-Origin</a> header for the data to be
+            accessible.</p>
+          </dd>
+        </dl>
+
+        <dl class="function" id="features">
+          <dt>
+            <i>geoJson</i>.<b>features</b>([<i>x</i>])
+          </dt>
+          <dd>
+            <p>Sets or gets the &ldquo;hard-coded&rdquo; features for this
+            GeoJSON layer. If the argument <i>x</i> is specified, this method
+            sets the features to the given array of GeoJSON <a
+            href="http://geojson.org/geojson-spec.html#feature-objects"
+            >feature objects</a> and returns <tt>this</tt>. If no arguments are
+            specified, this method returns the current features array, which
+            defaults to null.</p>
+
+            <p>The purpose of this method is to support non-tiled GeoJSON
+            layers that are loaded through external means, such as via <a
+            href="http://en.wikipedia.org/wiki/JSON#JSONP">JSONP</a> or directly
+            embedded in the HTML. Specifying the features array has the
+            additional side-effect of disabling <a href="layer.html#tile"
+            >tiling</a> and <a href="#clip">clipping</a>.</p>
+          </dd>
+        </dl>
+
+        <dl class="function" id="clip">
+          <dt>
+            <i>geoJson</i>.<b>clip</b>([<i>x</i>])
+          </dt>
+          <dd>
+            <p>Sets or gets whether tiles are clipped. If the boolean argument
+            <i>x</i> is specified, the method enables or disables clipping
+            accordingly, and returns <tt>this</tt>. If no arguments are
+            specified, the method returns true if and only if tiles are
+            clipped.</p>
+
+            <p>Tiles are clipped by default. Disabling clipping is useful for
+            GeoJSON features that may extend beyond the tile boundary, such as
+            points.</p>
+          </dd>
+        </dl>
+
+        <dl class="function" id="tileBackground">
+          <dt>
+            <i>geoJson</i>.<b>tileBackground</b>([<i>x</i>])
+          </dt>
+          <dd>
+            <p>Sets or gets whether rectangles corresponding to tile
+            backgrounds are drawn. If the boolean argument <i>x</i>
+            is specified, the method enables or disables drawing
+            tile background rectangles accordingly and returns
+            <tt>this</tt>. If no arguments are specified, the method
+            returns true if and only if tile backgrounds are drawn.
+			</p>
+
+            <p>Tile background rectangles are drawn by default. This
+            option is ignored for non-tiled layers.
+            </p>
+          </dd>
+        </dl>
+
+        <dl class="function" id="selection">
+          <dt>
+            <i>geoJson</i>.<b>selection</b>([<i>x</i>])
+          </dt>
+          <dd>
+            <p>Sets or gets the function to be called with the D3
+            selection generated from the GeoJSON data. If the argument
+            <i>x</i> is specified, this method sets the selection function
+            and returns <tt>this</tt>. If no arguments are specified,
+            this method returns the current selection function. By
+            default the selection function is <tt>undefined</tt>.
+            </p>
+          </dd>
+        </dl>
+
+        <dl class="function" id="scale">
+          <dt>
+            <i>geoJson</i>.<b>scale</b>([<i>x</i>])
+          </dt>
+          <dd>
+            <p>Sets or gets the scale attribute which is used to rescale points as the map zooms.  If scale is set to "fixed", then circle radius will remain constant while zooming.  Otherwise circle radius will scale on zoom.  scale("fixed") is defualt.
+            </p>
+          </dd>
+        </dl>
+
+        <h3>Events</h3>
+
+        <p>GeoJSON layers use the <a href="dispatch.html">dispatch</a> mechanism
+        to notify interested parties of events. In addition to the standard load
+        event, GeoJSON layers support the &ldquo;show&rdquo; event that is
+        triggered for each tile as it becomes visible. The show event allows
+        tiles to be styled dynamically through JavaScript. The <a href="stylist.html"
+        >stylist</a> convenience class may be used to simplify implementation of
+        load and show event handlers.</p>
+
+        <dl class="function" id="reshow">
+          <dt>
+            <i>geoJson</i>.<b>reshow</b>()
+          </dt>
+          <dd>
+            Dispatches a show event for each visible tile. If tiles are styled
+            dynamically through a show event listener, this allows styling to be
+            re-evaluated for all visible tiles.
+          </dd>
+        </dl>
+
+      </div>
+
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+  <div class="container text-center">
+    <div>Designed, built, and maintained with love by the team at Mapsense</div>
+    <div>
+      <a href="https://github.com/mapsense/mapsense.js" target="_blank">GitHub</a> -
+      <a href="http://www.mapsense.co/gallery/" target="_blank">Gallery</a> -
+      <a href="http://www.mapsense.co/blog/" target="_blank">Blog</a> -
+      <a href="https://twitter.com/Mapsense/" target="_blank">Twitter</a> -
+      <a href="https://github.com/mapsense/mapsense.js/issues" target="_blank">Issues</a> -
+      <a href="http://www.mapsense.co/tos/" target="_blank">Terms</a> -
+      <a href="http://www.mapsense.co/contact/" target="_blank">About</a> -
+      <a href="mailto:support@mapsense.co" target="_blank">Contact Us</a>:
+      <a href="mailto:support@mapsense.co" target="_blank">support@mapsense.co</a>
+    </div>
+    <div class="copyright">&copy; 2015 Mapsense Inc.</div>
+  </div>
+</footer>
+
+  </body>
+</html>
