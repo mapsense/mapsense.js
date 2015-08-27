@@ -23,7 +23,6 @@ JS_FILES = \
 	src/Compass.js \
 	src/Grid.js \
 	src/Attribution.js \
-	src/Basemap.js \
 	src/Stylist.js \
 	src/end.js
 
@@ -31,10 +30,7 @@ JS_COMPILER = \
 	java -jar lib/google-compiler/compiler-20150126.jar \
 	--charset UTF-8
 
-all: mapsense.min.js mapsense.js mapsense.css
-
-mapsense.css:
-	@npm run less
+all: mapsense.min.js mapsense.js
 
 %.min.js: %.js
 	$(JS_COMPILER) < $^ > $@
@@ -49,6 +45,4 @@ mapsense.js: $(JS_FILES) Makefile
 	chmod a-w $@
 
 clean:
-	rm -rf mapsense.js mapsense.min.js mapsense.css
-
-.PHONY: mapsense.css
+	rm -rf mapsense.js mapsense.min.js
