@@ -15,7 +15,9 @@ To summarize, here are the steps to follow:
 You should be able to see your change at http://&lt;username&gt;.github.io/&lt;projectname&gt;; in our case, http://mapsense.github.io/mapsense.js/
 
 ###Documentation generator
-We are using **_middleman_** to generate the mapsense.js documentation, you can find the code in this branch: [documentation-page-only] (https://github.com/mapsense/developer-tools/tree/documentation-page-only)
+We are using **_middleman_** to generate the mapsense.js documentation, you can find the code in this repo.: [mapsense.js-documentation] (https://github.com/WillySuMapSense/mapsense.js-documentation)
+#####NOTE: Need to transfer this repo. from WillySuMapSense to mapsense
+
 
 To generate or to modify the documentation content
 

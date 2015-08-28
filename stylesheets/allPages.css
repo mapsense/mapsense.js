@@ -1,82 +1,12 @@
 body {
   font-family: 'Quattrocento Sans', sans-serif;
-  background: url('/images/dot_bg.gif') fixed;
   margin-top: 50px; /* navbar's height */
 }
-nav.navbar {
-  background-color: #1a2e3f;
-  border-radius: 0px;
-  font-size: 12px;
-}
-
-.navbar-inverse { border-color: #fefefe; }
-
-nav.navbar ul.navbar-nav > li:hover { background-color: #000000; }
-nav.navbar ul.navbar-nav > li > a {
-  color: #ffffff;
-  text-transform: uppercase;
-}
-@media (min-width: 768px) {
-  ul.navbar-right { margin-right: 0; }
-}
-
-nav.navbar li.nav-right-item a.highlight-link { background-color: #0770aa; }
-
-@media (min-width: 768px) {
-  nav.navbar li.nav-right-item > a {
-    text-align: center;
-    width: 100px;
-  }
-  nav.navbar li.nav-right-item a.login-link {
-    position: absolute;
-    right: 100px;
-  }
-}
-nav.navbar li.nav-right-item > a {
-  color: #ffffff;
-  font-weight: bold;
-}
-nav.navbar ul.sub-navbar a { color: #555555; }
-nav.navbar ul.sub-navbar a:hover { color: #000000; }
-nav.navbar-fixed-top .navbar-collapse { max-height: 600px; }
-
-li.nav-right-item .has-feedback label~.form-control-feedback { top: 20px; }
-
 h1.page-title {
   font-weight: bold;
   margin-bottom: 5px;
 }
 p.page-subtitle, div.page-subtitle { font-size: 18px; }
-ul.sign-in-dropdown.dropdown-menu {
-  min-width: 370px;
-  padding: 30px;
-}
-ul.sign-in-dropdown.dropdown-menu label {
-  text-transform: uppercase;
-  font-size: 12px;
-  color: #333333;
-  margin-bottom: 0;
-}
-@media (max-width: 767px) {
-  .navbar-nav .open ul.sign-in-dropdown.dropdown-menu { background-color: #ffffff; }
-}
-
-ul.sign-in-dropdown.dropdown-menu form button {
-  text-transform: uppercase;
-  font-size: 12px;
-}
-ul.sign-in-dropdown.dropdown-menu form button.btn-primary { min-width: 120px; }
-ul.sign-in-dropdown.dropdown-menu form small {
-  color: #333333;
-  text-transform: none;
-  font-weight: bold;
-}
-ul.sign-in-dropdown.dropdown-menu form small.alreadyRegisteredText {
-  float: left;
-  line-height: 2.75em;
-}
-ul.sign-in-dropdown.dropdown-menu form small.createNewAccountText { margin-right: 24px; }
-ul.sign-in-dropdown.dropdown-menu form div.form-group:last-child { margin-top: 24px; }
 
 footer.footer, footer.footer div.container, section.footer { background-color: #dee4ea; }
 section.footer div.row { margin-bottom: 0; }
@@ -97,14 +27,4 @@ footer.footer .copyright {
 }
 @media (min-width: 992px) {
   footer.footer .copyright { position: absolute; }
-}
-
-div.formErrMsg {
-  margin: 2px 6px 0 0;
-  text-align: right;
-  color: red;
-}
-
-div.modal-content button.close {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
