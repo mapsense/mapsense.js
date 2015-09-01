@@ -1,211 +1,98 @@
-<!doctype html>
-<html>
-  <head>
-  <link rel="shortcut icon" href="images/favicon.ico" type="image/png">
-<link rel="apple-touch-icon" href="images/mapsense-icon-60.png" sizes="60x60">
-<link rel="apple-touch-icon" href="images/mapsense-icon-76.png" sizes="76x76">
-<link rel="apple-touch-icon" href="images/mapsense-icon-120.png" sizes="120x120">
-<link rel="apple-touch-icon" href="images/mapsense-icon-152.png" sizes="152x152">
+<h2>stylist</h2>
 
-  <link href='//fonts.googleapis.com/css?family=Quattrocento+Sans:400,700' rel='stylesheet' type='text/css'>
-  <script src="//google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
-  <link href="stylesheets/normalize.css" rel="stylesheet" type="text/css" />
-  <link href="stylesheets/all.css" rel="stylesheet" type="text/css" />
-  <link href="stylesheets/stickyFooter.css" rel="stylesheet" type="text/css" />
-  <style>
-    tbody{
-      background-color: white;
-    }
-    thead{
-      background-color: #EEE;
-    }
-    .container{
-      margin-bottom: 150px;
-    }
-    footer.footer div.container{
-      margin-bottom: 0;
-    }
-    pre.prettyprint {
-      padding:15px 15px !important;
-    }
-    div.main-content { background-color: #ffffff; }
-  </style>
-    <meta charset="utf-8">
-    
-    <!-- Always force latest IE rendering engine or request Chrome Frame -->
-    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    
-    <title>Mapsense Developer</title>
-  </head>
-  
-  <body>
-    <div class="container">
-      <div class="row">
-        <aside class="col-md-2 col-sm-2">
-          <h3><a href="./">Mapsense.js</a></h3>
-	<ul>
-		<li>
-			<h4>Core</h4>
-			<ul class="list-unstyled">
-			<li><a href="map.html">map</a></li>
-			<li><a href="layer.html">layer</a></li>
-			<li><a href="image.html">image</a></li>
-			<li><a href="geoJson.html">geoJson</a></li>
-			<li><a href="topoJson.html">topoJson</a></li>
-			</ul>
-		</li>
-		<li>
-			<h4>Controls</h4>
-			<ul class="list-unstyled">
-			<li><a href="arrow.html">arrow</a></li>
-			<li><a href="compass.html">compass</a></li>
-			<li><a href="dblclick.html">dblclick</a></li>
-			<li><a href="drag.html">drag</a></li>
-			<li><a href="grid.html">grid</a></li>
-			<li><a href="hash.html">hash</a></li>
-			<li><a href="interact.html">interact</a></li>
-			<li><a href="wheel.html">wheel</a></li>
-			</ul>
-		</li>
-		<li>
-			<h4>Et cetera</h4>
-			<ul class="list-unstyled">
-			<li><a href="attribution.html">attribution</a></li>
-			<li><a href="cache.html">cache</a></li>
-			<li><a href="dispatch.html">dispatch</a></li>
-			<li><a href="queue.html">queue</a></li>
-			<li><a href="svg.html">svg</a></li>
-			<li><a href="transform.html">transform</a></li>
-			<li><a href="url.html">url</a></li>
-			</ul>
-		</li>
-	</ul>
-
-        </aside>
-        <div class="col-md-10 col-sm-10 main-content">
-                <div class="span-18 prepend-6 last">
-
-        <h2>stylist</h2>
-
-        <div class="span-4">
-        <a href="#mapsense.stylist">stylist</a><br>
-        </div>
-
-        <div class="span-4">
-        <a href="#attr">attr</a><br>
-        </div>
-
-        <div class="span-4">
-        <a href="#style">style</a><br>
-        </div>
-
-        <div class="span-4">
-        <a href="#title">title</a><br>
-        </div>
-
-        <hr class="space"/>
-
-        <dl class="function" id="mapsense.stylist">
-          <dt>
-            <i>mapsense</i>.<b>stylist</b>()
-          </dt>
-          <dd>
-            <p>Constucts a stylist function with default settings. Stylist
-            functions can be registered as &ldquo;load&rdquo; or &ldquo;show&rdquo;
-            event handlers on <a href="geoJson.html">GeoJSON</a> layers for
-            dynamic styling. The stylist can have any number of registered <a href="#attr"
-            >attributes</a> and <a href="#style">style properties</a> that are
-            evaluated for each GeoJSON feature. In addition, the stylist may
-            have a <a href="#title">title</a> function which is used to compute
-            the tooltip for each feature.</p>
-
-            <p>For example, here is a simple stylist that computes the stroke
-            color for each element based on a <tt>PCI</tt> property
-            threshold:</p>
-
-            <pre><i>mapsense</i>.stylist()
-    .attr("stroke", function(d) { return d.properties.PCI < 50 ? "red" : "green"; })</pre>
-
-            <p>The registered values for each attribute, style or title are
-            typically specified as functions. However, constants may also be
-            used.</p>
-
-            <p>Stylists that do not change over time should register for
-            &ldquo;load&rdquo; events. Stylists that depend on state that
-            changes over time or with interaction, such as a time slider, should
-            register for &ldquo;show&rdquo; events; this allows <a
-            href="geoJson.html#reshow">reshow</a> to re-evaluate the stylist and
-            update the display.</p>
-          </dd>
-        </dl>
-
-        <dl class="function" id="map">
-          <dt>
-            <i>stylist</i>.<b>attr</b>(<i>n</i>, <i>v</i>)
-          </dt>
-          <dd>
-            <p>Adds a dynamic attribute with the given name <i>n</i> and
-            value <i>v</i>. The name is specified as a string; for namespaced
-            attributes, the prefixes &ldquo;svg:&rdquo; and &ldquo;xlink:&rdquo;
-            may be used; additional prefixes may be registered
-            with <a href="ns.html"><tt><i>mapsense</i>.ns</tt></a>. The value may be
-            specified either as a function, which is evaluated for each GeoJSON
-            feature object, or as a constant for all features. Returns
-            <tt>this</tt>.</p>
-          </dd>
-        </dl>
-
-        <dl class="function" id="map">
-          <dt>
-            <i>stylist</i>.<b>style</b>(<i>n</i>, <i>v</i>[, <i>p</i>])
-          </dt>
-          <dd>
-            <p>Adds a dynamic style property with the given name <i>n</i>,
-            value <i>v</i>, and optional priority <i>p</i>. The name is
-            specified as a string. The value may be specified either as a
-            function, which is evaluated for each GeoJSON feature object, or as
-            a constant for all features. The priority is specified either as
-            &ldquo;important&rdquo; or null. Returns <tt>this</tt>.</p>
-          </dd>
-        </dl>
-
-        <dl class="function" id="map">
-          <dt>
-            <i>stylist</i>.<b>title</b>(<i>v</i>)
-          </dt>
-          <dd>
-            <p>Sets the title value to <i>v</i>. The value may be specified
-            either as a function, which is evaluated for each GeoJSON feature
-            object, or as a constant for all features. Returns <tt>this</tt>.</p>
-
-            <p>Implementation note: titles are currently implemented using a
-            child <tt>svg:title</tt> element for each feature&rsquo;s path
-            element. Not all browsers may support this form of tooltip.</p>
-          </dd>
-        </dl>
-
-      </div>
-
-        </div>
-      </div>
-    </div>
-    <footer class="footer">
-  <div class="container text-center">
-    <div>Designed, built, and maintained with love by the team at Mapsense</div>
-    <div>
-      <a href="https://github.com/mapsense/mapsense.js" target="_blank">GitHub</a> -
-      <a href="http://www.mapsense.co/gallery/" target="_blank">Gallery</a> -
-      <a href="http://www.mapsense.co/blog/" target="_blank">Blog</a> -
-      <a href="https://twitter.com/Mapsense/" target="_blank">Twitter</a> -
-      <a href="https://github.com/mapsense/mapsense.js/issues" target="_blank">Issues</a> -
-      <a href="http://www.mapsense.co/tos/" target="_blank">Terms</a> -
-      <a href="http://www.mapsense.co/contact/" target="_blank">About</a> -
-      <a href="mailto:support@mapsense.co" target="_blank">Contact Us</a>:
-      <a href="mailto:support@mapsense.co" target="_blank">support@mapsense.co</a>
-    </div>
-    <div class="copyright">&copy; 2015 Mapsense Inc.</div>
+<div class="row">
+  <div class="col-md-4">
+    <a href="#mapsense.stylist">stylist</a><br>
   </div>
-</footer>
+  <div class="col-md-4">
+    <a href="#attr">attr</a><br>
+  </div>
 
-  </body>
-</html>
+  <div class="col-md-4">
+    <a href="#style">style</a><br>
+  </div>
+  <div class="col-md-4">
+    <a href="#title">title</a><br>
+  </div>
+</div>
+
+<hr class="space"/>
+
+<dl class="function" id="mapsense.stylist">
+  <dt>
+    <i>mapsense</i>.<b>stylist</b>()
+  </dt>
+  <dd>
+    <p>Constucts a stylist function with default settings. Stylist
+    functions can be registered as &ldquo;load&rdquo; or &ldquo;show&rdquo;
+    event handlers on <a href="geoJson.html">GeoJSON</a> layers for
+    dynamic styling. The stylist can have any number of registered <a href="#attr"
+    >attributes</a> and <a href="#style">style properties</a> that are
+    evaluated for each GeoJSON feature. In addition, the stylist may
+    have a <a href="#title">title</a> function which is used to compute
+    the tooltip for each feature.</p>
+
+    <p>For example, here is a simple stylist that computes the stroke
+    color for each element based on a <tt>PCI</tt> property
+    threshold:</p>
+
+    <pre><i>mapsense</i>.stylist()
+.attr("stroke", function(d) { return d.properties.PCI < 50 ? "red" : "green"; })</pre>
+
+    <p>The registered values for each attribute, style or title are
+    typically specified as functions. However, constants may also be
+    used.</p>
+
+    <p>Stylists that do not change over time should register for
+    &ldquo;load&rdquo; events. Stylists that depend on state that
+    changes over time or with interaction, such as a time slider, should
+    register for &ldquo;show&rdquo; events; this allows <a
+    href="geoJson.html#reshow">reshow</a> to re-evaluate the stylist and
+    update the display.</p>
+  </dd>
+</dl>
+
+<dl class="function" id="map">
+  <dt>
+    <i>stylist</i>.<b>attr</b>(<i>n</i>, <i>v</i>)
+  </dt>
+  <dd>
+    <p>Adds a dynamic attribute with the given name <i>n</i> and
+    value <i>v</i>. The name is specified as a string; for namespaced
+    attributes, the prefixes &ldquo;svg:&rdquo; and &ldquo;xlink:&rdquo;
+    may be used; additional prefixes may be registered
+    with <a href="ns.html"><tt><i>mapsense</i>.ns</tt></a>. The value may be
+    specified either as a function, which is evaluated for each GeoJSON
+    feature object, or as a constant for all features. Returns
+    <tt>this</tt>.</p>
+  </dd>
+</dl>
+
+<dl class="function" id="map">
+  <dt>
+    <i>stylist</i>.<b>style</b>(<i>n</i>, <i>v</i>[, <i>p</i>])
+  </dt>
+  <dd>
+    <p>Adds a dynamic style property with the given name <i>n</i>,
+    value <i>v</i>, and optional priority <i>p</i>. The name is
+    specified as a string. The value may be specified either as a
+    function, which is evaluated for each GeoJSON feature object, or as
+    a constant for all features. The priority is specified either as
+    &ldquo;important&rdquo; or null. Returns <tt>this</tt>.</p>
+  </dd>
+</dl>
+
+<dl class="function" id="map">
+  <dt>
+    <i>stylist</i>.<b>title</b>(<i>v</i>)
+  </dt>
+  <dd>
+    <p>Sets the title value to <i>v</i>. The value may be specified
+    either as a function, which is evaluated for each GeoJSON feature
+    object, or as a constant for all features. Returns <tt>this</tt>.</p>
+
+    <p>Implementation note: titles are currently implemented using a
+    child <tt>svg:title</tt> element for each feature&rsquo;s path
+    element. Not all browsers may support this form of tooltip.</p>
+  </dd>
+</dl>

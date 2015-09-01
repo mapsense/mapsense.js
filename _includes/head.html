@@ -1,0 +1,12 @@
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% include favicons.html %}
+  <title>{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}</title>
+  <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
+  <link href='//fonts.googleapis.com/css?family=Quattrocento+Sans:400,700' rel='stylesheet' type='text/css'>
+  <link href="{{ 'bootstrap.min.css' | prepend: cssPath }}" rel='stylesheet' type='text/css'>
+  <link href="{{ 'all.css' | prepend: cssPath }}" rel='stylesheet' type='text/css'>
+  <script src="//google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+</head>

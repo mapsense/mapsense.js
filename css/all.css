@@ -1,16 +1,27 @@
+/* Sticky footer styles */
+html {
+  position: relative;
+  min-height: 100%;
+}
 body {
   font-family: 'Quattrocento Sans', sans-serif;
   margin-top: 50px; /* navbar's height */
+  margin-bottom: 100px;
+  background-image: url('../images/dot_bg.gif');
 }
 h1.page-title {
   font-weight: bold;
   margin-bottom: 5px;
 }
 p.page-subtitle, div.page-subtitle { font-size: 18px; }
+div.main-content { background-color: #ffffff}
 
 footer.footer, footer.footer div.container, section.footer { background-color: #dee4ea; }
 section.footer div.row { margin-bottom: 0; }
 footer.footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
   color: #666666;
   line-height: 2em;
   font-size: 12px;

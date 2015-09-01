@@ -1,178 +1,67 @@
-<!doctype html>
-<html>
-  <head>
-  <link rel="shortcut icon" href="images/favicon.ico" type="image/png">
-<link rel="apple-touch-icon" href="images/mapsense-icon-60.png" sizes="60x60">
-<link rel="apple-touch-icon" href="images/mapsense-icon-76.png" sizes="76x76">
-<link rel="apple-touch-icon" href="images/mapsense-icon-120.png" sizes="120x120">
-<link rel="apple-touch-icon" href="images/mapsense-icon-152.png" sizes="152x152">
+---
+---
+<h2>dblclick</h2>
 
-  <link href='//fonts.googleapis.com/css?family=Quattrocento+Sans:400,700' rel='stylesheet' type='text/css'>
-  <script src="//google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
-  <link href="stylesheets/normalize.css" rel="stylesheet" type="text/css" />
-  <link href="stylesheets/all.css" rel="stylesheet" type="text/css" />
-  <link href="stylesheets/stickyFooter.css" rel="stylesheet" type="text/css" />
-  <style>
-    tbody{
-      background-color: white;
-    }
-    thead{
-      background-color: #EEE;
-    }
-    .container{
-      margin-bottom: 150px;
-    }
-    footer.footer div.container{
-      margin-bottom: 0;
-    }
-    pre.prettyprint {
-      padding:15px 15px !important;
-    }
-    div.main-content { background-color: #ffffff; }
-  </style>
-    <meta charset="utf-8">
-    
-    <!-- Always force latest IE rendering engine or request Chrome Frame -->
-    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    
-    <title>Mapsense Developer</title>
-  </head>
-  
-  <body>
-    <div class="container">
-      <div class="row">
-        <aside class="col-md-2 col-sm-2">
-          <h3><a href="./">Mapsense.js</a></h3>
-	<ul>
-		<li>
-			<h4>Core</h4>
-			<ul class="list-unstyled">
-			<li><a href="map.html">map</a></li>
-			<li><a href="layer.html">layer</a></li>
-			<li><a href="image.html">image</a></li>
-			<li><a href="geoJson.html">geoJson</a></li>
-			<li><a href="topoJson.html">topoJson</a></li>
-			</ul>
-		</li>
-		<li>
-			<h4>Controls</h4>
-			<ul class="list-unstyled">
-			<li><a href="arrow.html">arrow</a></li>
-			<li><a href="compass.html">compass</a></li>
-			<li><a href="dblclick.html">dblclick</a></li>
-			<li><a href="drag.html">drag</a></li>
-			<li><a href="grid.html">grid</a></li>
-			<li><a href="hash.html">hash</a></li>
-			<li><a href="interact.html">interact</a></li>
-			<li><a href="wheel.html">wheel</a></li>
-			</ul>
-		</li>
-		<li>
-			<h4>Et cetera</h4>
-			<ul class="list-unstyled">
-			<li><a href="attribution.html">attribution</a></li>
-			<li><a href="cache.html">cache</a></li>
-			<li><a href="dispatch.html">dispatch</a></li>
-			<li><a href="queue.html">queue</a></li>
-			<li><a href="svg.html">svg</a></li>
-			<li><a href="transform.html">transform</a></li>
-			<li><a href="url.html">url</a></li>
-			</ul>
-		</li>
-	</ul>
+<blockquote>Provides event listeners for zooming with double click.</blockquote>
 
-        </aside>
-        <div class="col-md-10 col-sm-10 main-content">
-                <div class="span-18 prepend-6 last">
-
-        <h2>dblclick</h2>
-
-        <blockquote>Provides event listeners for zooming with double click.</blockquote>
-
-        <div class="span-4">
-        <a href="#mapsense.dblclick">dblclick</a><br>
-        </div>
-
-        <div class="span-4">
-        <a href="#map">map</a><br>
-        </div>
-
-        <div class="span-4">
-        <a href="#zoom">zoom</a><br>
-        </div>
-
-        <hr class="space"/>
-
-        <dl class="function" id="mapsense.dblclick">
-          <dt>
-            <i>mapsense</i>.<b>dblclick</b>()
-          </dt>
-          <dd>
-            Constructs a double-click control with default settings. This
-            control allows the user to double-click to zoom in on the given
-            point, and shift-double-click to zoom out. The double-click snaps to
-            the nearest integral zoom level, providing optimal display of tiles.
-          </dd>
-        </dl>
-
-        <dl class="function" id="map">
-          <dt>
-            <i>dblclick</i>.<b>map</b>([<i>x</i>])
-          </dt>
-          <dd>
-            <p>Adds this control to the specified map <i>x</i>, removes this
-            control from its current map, or returns the current map. This
-            method is typically not called directly, but is needed to support
-            the map&rsquo;s <a href="map.html#add">add</a> method and <a
-            href="map.html#remove">remove</a> methods.</p>
-
-            <p>If the argument <i>x</i> is specified, this method returns
-            <tt>this</tt>. If <i>x</i> is null, this control is removed from its
-            current map; otherwise, this control is added to the specified map.
-            If no arguments are specified, this method returns the current map,
-            which may be null. Whew!</p>
-          </dd>
-        </dl>
-
-        <dl class="function" id="zoom">
-          <dt>
-            <i>dblclick</i>.<b>zoom</b>([<i>x</i>])
-          </dt>
-          <dd>
-            <p>Sets or gets the zoom mode of this control. If the argument
-            <i>x</i> is specified, this method sets the zoom mode to the
-            given named value and returns <tt>this</tt>. If no arguments are
-            specified, this method returns the current named zoom mode.</p>
-
-            <p>The following zoom modes are supported: &ldquo;mouse&rdquo;,
-            &ldquo;center&rdquo;. The default mode is &ldquo;mouse&rdquo;, which
-            causes the control to zoom around the location at the mouse cursor.
-            The &ldquo;center&rdquo; mode will zoom around the map center.</p>
-          </dd>
-        </dl>
-
-      </div>
-
-        </div>
-      </div>
-    </div>
-    <footer class="footer">
-  <div class="container text-center">
-    <div>Designed, built, and maintained with love by the team at Mapsense</div>
-    <div>
-      <a href="https://github.com/mapsense/mapsense.js" target="_blank">GitHub</a> -
-      <a href="http://www.mapsense.co/gallery/" target="_blank">Gallery</a> -
-      <a href="http://www.mapsense.co/blog/" target="_blank">Blog</a> -
-      <a href="https://twitter.com/Mapsense/" target="_blank">Twitter</a> -
-      <a href="https://github.com/mapsense/mapsense.js/issues" target="_blank">Issues</a> -
-      <a href="http://www.mapsense.co/tos/" target="_blank">Terms</a> -
-      <a href="http://www.mapsense.co/contact/" target="_blank">About</a> -
-      <a href="mailto:support@mapsense.co" target="_blank">Contact Us</a>:
-      <a href="mailto:support@mapsense.co" target="_blank">support@mapsense.co</a>
-    </div>
-    <div class="copyright">&copy; 2015 Mapsense Inc.</div>
+<div class="row">
+  <div class="col-md-4">
+    <a href="#mapsense.dblclick">dblclick</a><br>
   </div>
-</footer>
+  <div class="col-md-4">
+    <a href="#map">map</a><br>
+  </div>
+  <div class="col-md-4">
+    <a href="#zoom">zoom</a><br>
+  </div>
+</div>
 
-  </body>
-</html>
+<hr class="space"/>
+
+<dl class="function" id="mapsense.dblclick">
+  <dt>
+    <i>mapsense</i>.<b>dblclick</b>()
+  </dt>
+  <dd>
+    Constructs a double-click control with default settings. This
+    control allows the user to double-click to zoom in on the given
+    point, and shift-double-click to zoom out. The double-click snaps to
+    the nearest integral zoom level, providing optimal display of tiles.
+  </dd>
+</dl>
+
+<dl class="function" id="map">
+  <dt>
+    <i>dblclick</i>.<b>map</b>([<i>x</i>])
+  </dt>
+  <dd>
+    <p>Adds this control to the specified map <i>x</i>, removes this
+    control from its current map, or returns the current map. This
+    method is typically not called directly, but is needed to support
+    the map&rsquo;s <a href="map.html#add">add</a> method and <a
+    href="map.html#remove">remove</a> methods.</p>
+
+    <p>If the argument <i>x</i> is specified, this method returns
+    <tt>this</tt>. If <i>x</i> is null, this control is removed from its
+    current map; otherwise, this control is added to the specified map.
+    If no arguments are specified, this method returns the current map,
+    which may be null. Whew!</p>
+  </dd>
+</dl>
+
+<dl class="function" id="zoom">
+  <dt>
+    <i>dblclick</i>.<b>zoom</b>([<i>x</i>])
+  </dt>
+  <dd>
+    <p>Sets or gets the zoom mode of this control. If the argument
+    <i>x</i> is specified, this method sets the zoom mode to the
+    given named value and returns <tt>this</tt>. If no arguments are
+    specified, this method returns the current named zoom mode.</p>
+
+    <p>The following zoom modes are supported: &ldquo;mouse&rdquo;,
+    &ldquo;center&rdquo;. The default mode is &ldquo;mouse&rdquo;, which
+    causes the control to zoom around the location at the mouse cursor.
+    The &ldquo;center&rdquo; mode will zoom around the map center.</p>
+  </dd>
+</dl>

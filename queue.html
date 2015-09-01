@@ -1,202 +1,93 @@
-<!doctype html>
-<html>
-  <head>
-  <link rel="shortcut icon" href="images/favicon.ico" type="image/png">
-<link rel="apple-touch-icon" href="images/mapsense-icon-60.png" sizes="60x60">
-<link rel="apple-touch-icon" href="images/mapsense-icon-76.png" sizes="76x76">
-<link rel="apple-touch-icon" href="images/mapsense-icon-120.png" sizes="120x120">
-<link rel="apple-touch-icon" href="images/mapsense-icon-152.png" sizes="152x152">
+---
+---
+<h2>queue</h2>
 
-  <link href='//fonts.googleapis.com/css?family=Quattrocento+Sans:400,700' rel='stylesheet' type='text/css'>
-  <script src="//google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
-  <link href="stylesheets/normalize.css" rel="stylesheet" type="text/css" />
-  <link href="stylesheets/all.css" rel="stylesheet" type="text/css" />
-  <link href="stylesheets/stickyFooter.css" rel="stylesheet" type="text/css" />
-  <style>
-    tbody{
-      background-color: white;
-    }
-    thead{
-      background-color: #EEE;
-    }
-    .container{
-      margin-bottom: 150px;
-    }
-    footer.footer div.container{
-      margin-bottom: 0;
-    }
-    pre.prettyprint {
-      padding:15px 15px !important;
-    }
-    div.main-content { background-color: #ffffff; }
-  </style>
-    <meta charset="utf-8">
-    
-    <!-- Always force latest IE rendering engine or request Chrome Frame -->
-    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
-    
-    <title>Mapsense Developer</title>
-  </head>
-  
-  <body>
-    <div class="container">
-      <div class="row">
-        <aside class="col-md-2 col-sm-2">
-          <h3><a href="./">Mapsense.js</a></h3>
-	<ul>
-		<li>
-			<h4>Core</h4>
-			<ul class="list-unstyled">
-			<li><a href="map.html">map</a></li>
-			<li><a href="layer.html">layer</a></li>
-			<li><a href="image.html">image</a></li>
-			<li><a href="geoJson.html">geoJson</a></li>
-			<li><a href="topoJson.html">topoJson</a></li>
-			</ul>
-		</li>
-		<li>
-			<h4>Controls</h4>
-			<ul class="list-unstyled">
-			<li><a href="arrow.html">arrow</a></li>
-			<li><a href="compass.html">compass</a></li>
-			<li><a href="dblclick.html">dblclick</a></li>
-			<li><a href="drag.html">drag</a></li>
-			<li><a href="grid.html">grid</a></li>
-			<li><a href="hash.html">hash</a></li>
-			<li><a href="interact.html">interact</a></li>
-			<li><a href="wheel.html">wheel</a></li>
-			</ul>
-		</li>
-		<li>
-			<h4>Et cetera</h4>
-			<ul class="list-unstyled">
-			<li><a href="attribution.html">attribution</a></li>
-			<li><a href="cache.html">cache</a></li>
-			<li><a href="dispatch.html">dispatch</a></li>
-			<li><a href="queue.html">queue</a></li>
-			<li><a href="svg.html">svg</a></li>
-			<li><a href="transform.html">transform</a></li>
-			<li><a href="url.html">url</a></li>
-			</ul>
-		</li>
-	</ul>
-
-        </aside>
-        <div class="col-md-10 col-sm-10 main-content">
-                <div class="span-18 prepend-6 last">
-
-        <h2>queue</h2>
-
-        <div class="span-4">
-        <a href="#request.abort">abort</a><br>
-        <a href="#mapsense.queue.image">image</a><br>
-        <a href="#mapsense.queue.json">json</a><br>
-        <a href="#mapsense.queue.octetStream">octetStream</a><br>
-        <a href="#mapsense.queue">queue</a><br>
-        <a href="#mapsense.queue.text">text</a><br>
-        <a href="#mapsense.queue.xml">xml</a><br>
-        </div>
-
-        <hr class="space"/>
-
-        <dl class="function" id="mapsense.queue">
-          <dt>
-            <i>mapsense</i>.<b>queue</b>
-          </dt>
-          <dd>
-            The queue manages asynchronous requests for network resources.
-          </dd>
-        </dl>
-
-        <dl class="function" id="mapsense.queue.text">
-          <dt>
-            <i>mapsense</i>.<b>queue</b>.<b>text</b>(<i>url</i>, <i>callback</i>[, <i>t</i>])
-          </dt>
-          <dd>
-            Creates a new request for the text data at the specified
-            <i>url</i>. Upon successful completion, the supplied function
-            <i>callback</i> is invoked with the response text.
-          </dd>
-        </dl>
-
-        <dl class="function" id="mapsense.queue.json">
-          <dt>
-            <i>mapsense</i>.<b>queue</b>.<b>json</b>(<i>url</i>, <i>callback</i>)
-          </dt>
-          <dd>
-            Creates a new request for the JSON data at the specified
-            <i>url</i>. Upon successful completion, the supplied function
-            <i>callback</i> is invoked with the response JSON data.
-          </dd>
-        </dl>
-
-        <dl class="function" id="mapsense.queue.xml">
-          <dt>
-            <i>mapsense</i>.<b>queue</b>.<b>xml</b>(<i>url</i>, <i>callback</i>)
-          </dt>
-          <dd>
-            Creates a new request for the XML data at the specified
-            <i>url</i>. Upon successful completion, the supplied function
-            <i>callback</i> is invoked with the response XML data.
-          </dd>
-        </dl>
-
-        <dl class="function" id="mapsense.queue.octetStream">
-          <dt>
-            <i>mapsense</i>.<b>queue</b>.<b>octetStream</b>(<i>url</i>, <i>callback</i>)
-          </dt>
-          <dd>
-            Creates a new request for the XML data at the specified <i>url</i>.
-            Upon successful completion, the supplied function <i>callback</i>
-            is invoked with the response data represented as an ArrayBuffer.
-          </dd>
-        </dl>
-
-        <dl class="function" id="mapsense.queue.image">
-          <dt>
-            <i>mapsense</i>.<b>queue</b>.<b>image</b>(<i>i</i>, <i>url</i>, <i>callback</i>)
-          </dt>
-          <dd>
-            Creates a new request for the image at the specified <i>url</i> and
-            associates it with the SVG image element <i>i</i>. Upon successful
-            completion the supplied function <i>callback</i> is invoked.
-          </dd>
-        </dl>
-
-        <dl class="function" id="request.abort">
-          <dt>
-            <i>request</i>.<b>abort</b>(<i>hard</i>)
-          </dt>
-          <dd>
-            Removes the specified request from the queue. If <i>hard</i> is
-            specified and the type of request supports such cancelation, the
-            request is canceled even if it has been started. Returns true if
-            the request was found in the queue and false otherwise.
-          </dd>
-        </dl>
-
-      </div>
-
-        </div>
-      </div>
-    </div>
-    <footer class="footer">
-  <div class="container text-center">
-    <div>Designed, built, and maintained with love by the team at Mapsense</div>
-    <div>
-      <a href="https://github.com/mapsense/mapsense.js" target="_blank">GitHub</a> -
-      <a href="http://www.mapsense.co/gallery/" target="_blank">Gallery</a> -
-      <a href="http://www.mapsense.co/blog/" target="_blank">Blog</a> -
-      <a href="https://twitter.com/Mapsense/" target="_blank">Twitter</a> -
-      <a href="https://github.com/mapsense/mapsense.js/issues" target="_blank">Issues</a> -
-      <a href="http://www.mapsense.co/tos/" target="_blank">Terms</a> -
-      <a href="http://www.mapsense.co/contact/" target="_blank">About</a> -
-      <a href="mailto:support@mapsense.co" target="_blank">Contact Us</a>:
-      <a href="mailto:support@mapsense.co" target="_blank">support@mapsense.co</a>
-    </div>
-    <div class="copyright">&copy; 2015 Mapsense Inc.</div>
+<div class="row">
+  <div class="col-md-4">
+    <a href="#request.abort">abort</a><br>
+    <a href="#mapsense.queue.image">image</a><br>
+    <a href="#mapsense.queue.json">json</a><br>
+    <a href="#mapsense.queue.octetStream">octetStream</a><br>
+    <a href="#mapsense.queue">queue</a><br>
+    <a href="#mapsense.queue.text">text</a><br>
+    <a href="#mapsense.queue.xml">xml</a><br>
   </div>
-</footer>
+</div>
 
-  </body>
-</html>
+<hr class="space"/>
+
+<dl class="function" id="mapsense.queue">
+  <dt>
+    <i>mapsense</i>.<b>queue</b>
+  </dt>
+  <dd>
+    The queue manages asynchronous requests for network resources.
+  </dd>
+</dl>
+
+<dl class="function" id="mapsense.queue.text">
+  <dt>
+    <i>mapsense</i>.<b>queue</b>.<b>text</b>(<i>url</i>, <i>callback</i>[, <i>t</i>])
+  </dt>
+  <dd>
+    Creates a new request for the text data at the specified
+    <i>url</i>. Upon successful completion, the supplied function
+    <i>callback</i> is invoked with the response text.
+  </dd>
+</dl>
+
+<dl class="function" id="mapsense.queue.json">
+  <dt>
+    <i>mapsense</i>.<b>queue</b>.<b>json</b>(<i>url</i>, <i>callback</i>)
+  </dt>
+  <dd>
+    Creates a new request for the JSON data at the specified
+    <i>url</i>. Upon successful completion, the supplied function
+    <i>callback</i> is invoked with the response JSON data.
+  </dd>
+</dl>
+
+<dl class="function" id="mapsense.queue.xml">
+  <dt>
+    <i>mapsense</i>.<b>queue</b>.<b>xml</b>(<i>url</i>, <i>callback</i>)
+  </dt>
+  <dd>
+    Creates a new request for the XML data at the specified
+    <i>url</i>. Upon successful completion, the supplied function
+    <i>callback</i> is invoked with the response XML data.
+  </dd>
+</dl>
+
+<dl class="function" id="mapsense.queue.octetStream">
+  <dt>
+    <i>mapsense</i>.<b>queue</b>.<b>octetStream</b>(<i>url</i>, <i>callback</i>)
+  </dt>
+  <dd>
+    Creates a new request for the XML data at the specified <i>url</i>.
+    Upon successful completion, the supplied function <i>callback</i>
+    is invoked with the response data represented as an ArrayBuffer.
+  </dd>
+</dl>
+
+<dl class="function" id="mapsense.queue.image">
+  <dt>
+    <i>mapsense</i>.<b>queue</b>.<b>image</b>(<i>i</i>, <i>url</i>, <i>callback</i>)
+  </dt>
+  <dd>
+    Creates a new request for the image at the specified <i>url</i> and
+    associates it with the SVG image element <i>i</i>. Upon successful
+    completion the supplied function <i>callback</i> is invoked.
+  </dd>
+</dl>
+
+<dl class="function" id="request.abort">
+  <dt>
+    <i>request</i>.<b>abort</b>(<i>hard</i>)
+  </dt>
+  <dd>
+    Removes the specified request from the queue. If <i>hard</i> is
+    specified and the type of request supports such cancelation, the
+    request is canceled even if it has been started. Returns true if
+    the request was found in the queue and false otherwise.
+  </dd>
+</dl>

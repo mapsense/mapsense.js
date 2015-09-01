@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+  {% include globalVars.html %}
+  {% include head.html %}
+
+  <body>
+    <div class="container">
+      <div class="row">
+        <aside class="col-md-2 col-sm-2">
+          {% include sidebar.html %}
+        </aside>
+        <div class="col-md-10 col-sm-10 main-content">
+          {{ content }}
+        </div>
+      </div>
+    </div>
+    {% include footer.html %}
+  </body>
+
+</html>
