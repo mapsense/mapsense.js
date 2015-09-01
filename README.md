@@ -15,19 +15,24 @@ To summarize, here are the steps to follow:
 You should be able to see your change at http://&lt;username&gt;.github.io/&lt;projectname&gt;; in our case, http://mapsense.github.io/mapsense.js/
 
 ###Documentation generator
-We are using **_middleman_** to generate the mapsense.js documentation, you can find the code in this repo.: [mapsense.js-documentation] (https://github.com/WillySuMapSense/mapsense.js-documentation)
-#####NOTE: Need to transfer this repo. from WillySuMapSense to mapsense
+~~We are using **_middleman_** to generate the mapsense.js documentation, you can find the code in this repo.: [mapsense.js-documentation] (https://github.com/WillySuMapSense/mapsense.js-documentation)~~
+#####~~NOTE: Need to transfer this repo. from WillySuMapSense to mapsense~~
 
 
-To generate or to modify the documentation content
+~~To generate or to modify the documentation content~~
 
-1. Make your changes on the branch
-2. Remove build folder => rm -rf build
-3. Generate the new content => middleman build
+1. ~~Make your changes on the branch~~
+2. ~~Remove build folder => rm -rf build~~
+3. ~~Generate the new content => middleman build~~
 
-The new content will be in the folder **build**
+~~The new content will be in the folder **build**~~
 
-Copy-paste the new content from the branch documentation-page-only of developer-tools to the branch gh-pages of mapsense.js
+~~Copy-paste the new content from the branch documentation-page-only of developer-tools to the branch gh-pages of mapsense.js~~
 
 Commit your changes in the branch gh-pages of mapsense.js, then you should be able to see the updated documentation page in http://mapsense.github.io/mapsense.js/
 
+#####Switch the static pages generator from _middleman_ to **_jekyll_**
+
+**_jekyll_** is supported natively by **github**, which means that we don't need to compile our static web pages and copy-paste to _gh-pages_ blanch anymore; just update the pre-compile files to _gh-pages_ blanch, then **github** will compile and generate the static pages automatically.
+
+More information can be found [Using Jekyll with Pages - User Documentation] (https://help.github.com/articles/using-jekyll-with-pages/)
