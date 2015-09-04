@@ -2,7 +2,7 @@
 
 Mapsense.js is a JavaScript library for vector maps in the browser. It brings the scalability of tiled geographic datasets to the interactivity, control, and dynamism of D3. A D3 selection is maintained across incoming tiles, letting you set things like styles or interaction just once. Mapsense.js is based on the Polymaps API, but uses D3 to handle drawing and selection.
 
-See <http://developer.mapsense.co/documentation> for more details.
+See <http://mapsense.github.io/mapsense.js> for more details.
 
 ## Filing Bugs
 
